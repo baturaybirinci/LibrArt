@@ -4,6 +4,10 @@ from .models import User, Collection
 from .serializers import UserSerializer, CollectionSerializer
 import math
 from datetime import datetime
+from librart_backend.settings import STATIC_URL
+from django.http import JsonResponse
+import glob
+import json
 
 
 class UserAPI(generics.GenericAPIView):
@@ -22,7 +26,7 @@ class UserAPI(generics.GenericAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-        
+
 
 class UserDetailAPI(generics.GenericAPIView):
     queryset = User.objects.all()
@@ -116,3 +120,12 @@ class CollectionDetailAPI(generics.GenericAPIView):
         collection.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class IPFSMetadataAPI(generics.GenericAPIView):
+    def get(self, request):
+        result = []
+        for f in glob.glob(f'{STATIC_URL}/ipfs_metadata/*.json'):
+            with open(f, "rb") as infile:
+                result.append(json.load(infile))
+
+        return JsonResponse(result, safe=False, status=status.HTTP_200_OK)
