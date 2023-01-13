@@ -7,13 +7,13 @@ def current_year():
     return datetime.date.today().year
 
 def max_value_current_year(value):
-    return MaxValueValidator(current_year())(value)    
+    return MaxValueValidator(current_year())(value)
 
 class ContentCreator(models.Model):
     class CreatorType(models.TextChoices):
         MUSEUM = 'MU', _('Museum')
         INDIVIDUAL = 'IN', _('Individual')
-    
+
     creator_type = models.CharField(
         max_length = 2,
         choices = CreatorType.choices,
@@ -45,7 +45,7 @@ class ContentCreator(models.Model):
 
 
 class Collection(models.Model):
-    owned_by = models.ForeignKey(ContentCreator, on_delete=models.CASCADE)
+    creator = models.ForeignKey(ContentCreator, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add = True)
@@ -79,5 +79,3 @@ class CollectionImage(models.Model):
 
 class NFT(models.Model):
     name = models.CharField(max_length=255)
-
-    
