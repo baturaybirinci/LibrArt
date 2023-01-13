@@ -6,7 +6,7 @@ class User(models.Model):
         MUSEUM = 'MU', _('Museum')
         INDIVIDUAL = 'IN', _('Individual')
 
-    creator_type = models.CharField(
+    user_type = models.CharField(
         max_length = 2,
         choices = UserType.choices,
         default = UserType.MUSEUM
@@ -20,9 +20,9 @@ class User(models.Model):
 
     # add banner image
 
-    def get_creator_type(self) -> UserType:
+    def get_user_type(self) -> UserType:
         # Get value from choices enum
-        return self.UserType[self.creator_type]
+        return self.UserType[self.user_type]
 
 
 
@@ -32,5 +32,3 @@ class Collection(models.Model):
     address = models.CharField(max_length=255, primary_key=True)
     avatar = models.ImageField(null=True, blank=True)
     banner = models.ImageField(null=True, blank=True)
-
-
