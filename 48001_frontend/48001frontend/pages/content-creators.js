@@ -1,9 +1,13 @@
 import Head from 'next/head'
 import Container from 'react-bootstrap/Container'
+import LibrartNavbar from '../components/librart-navbar';
 
 export default function ContentCreators({data, done}) {
+  const Collections = require("../public/collections.json");
+  console.log(Collections, Collections["user1Collections"]);
   return (
     <>
+    
       <Head>
         <title>Librart</title>
         <meta name="description" content="Librart v0.1" />
@@ -11,17 +15,11 @@ export default function ContentCreators({data, done}) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Container>
+      <LibrartNavbar/>
       <div>
         <main>
-          {data.map((element) => <div key = {element.slug}>
-            <div>
-              <p>Content creator: {element.name}</p>
-              <p>Content id: {element.id}</p>
-              <p>Content type: {element.creator_type}</p>
-              <p>Slug: {element.slug}</p>
-              <p>Created at: {element.created_at}</p>
-            </div>
-            <hr/>
+          {Collections["allContentCreator"].map((addr) => <div key = {addr} >
+          <div>{addr}</div>
           </div>)}
         </main>
       </div>

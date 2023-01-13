@@ -1,25 +1,14 @@
 from rest_framework import serializers
-from .models import ContentCreator, Collection, NFT
+from .models import User, Collection
 
 
-class ContentCreatorSerializer(serializers.ModelSerializer):
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ContentCreator
+        model = User
         fields = "__all__"
 
 
 class CollectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Collection
-        fields = "__all__"
-
-class CollectionImageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Collection
-        fields = "__all__"
-
-
-class NFTSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = NFT
         fields = "__all__"

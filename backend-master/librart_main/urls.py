@@ -1,18 +1,12 @@
 from django.urls import path
-from .views import ContentCreatorAPI, ContentCreatorDetailAPI, CollectionAPI, CollectionDetailAPI, CollectionImageAPI, CollectionImageDetailAPI, NFTAPI, NFTDetailAPI
+from .views import UserAPI, UserDetailAPI, CollectionAPI, CollectionDetailAPI
 
 
 urlpatterns = [
-    path('content-cretor', ContentCreatorAPI.as_view()),
-    path('content-cretor/<str:pk>', ContentCreatorDetailAPI.as_view()),
+    path('user/', UserAPI.as_view()),
+    path('user/<str:pk>/', UserDetailAPI.as_view()),
 
-    path('collection', CollectionAPI.as_view()),
-    path('collection/<str:pk>', CollectionDetailAPI.as_view()),
+    path('collection/', CollectionAPI.as_view()),
+    path('collection/<str:pk>/', CollectionDetailAPI.as_view()),
 
-
-    path('collection-image', CollectionImageAPI.as_view()),
-    path('collection-image/<str:pk>', CollectionImageDetailAPI.as_view()),
-
-    path('nft', NFTAPI.as_view()),
-    path('nft/<str:pk>', NFTDetailAPI.as_view()),
 ]

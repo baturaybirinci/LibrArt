@@ -1,288 +1,118 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
-from .models import ContentCreator, Collection, CollectionImage, NFT
-from .serializers import ContentCreatorSerializer, CollectionSerializer, CollectionImageSerializer, NFTSerializer
+from .models import User, Collection
+from .serializers import UserSerializer, CollectionSerializer
 import math
 from datetime import datetime
 
 
-class ContentCreatorAPI(generics.GenericAPIView):
-    serializer_class = ContentCreatorSerializer
-    queryset = ContentCreator.objects.all()
+class UserAPI(generics.GenericAPIView):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
 
     def get(self, request):
-        page_num = int(request.GET.get("page", 1))
-        limit_num = int(request.GET.get("limit", 10))
-        start_num = (page_num - 1) * limit_num
-        end_num = limit_num * page_num
-        search_param = request.GET.get("search")
-        notes = ContentCreator.objects.all()
-        total_notes = notes.count()
-        if search_param:
-            notes = notes.filter(title__icontains=search_param)
-        serializer = self.serializer_class(notes[start_num:end_num], many=True)
-        return Response({
-            "status": "success",
-            "total": total_notes,
-            "page": page_num,
-            "last_page": math.ceil(total_notes / limit_num),
-            "notes": serializer.data
-        })
+        users = User.objects.all()
+        serializer = self.serializer_class(users, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"status": "success", "note": serializer.data}, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        
 
-class ContentCreatorDetailAPI(generics.GenericAPIView):
-    queryset = ContentCreator.objects.all()
-    serializer_class = ContentCreatorSerializer
+class UserDetailAPI(generics.GenericAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
-    def get_note(self, pk):
+    def get_user(self, pk):
         try:
-            return ContentCreator.objects.get(pk=pk)
+            return User.objects.get(pk=pk)
         except:
             return None
 
     def get(self, request, pk):
-        note = self.get_note(pk=pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.serializer_class(note)
-        return Response({"status": "success", "note": serializer.data})
+        user = self.get_user(pk=pk)
+        if user is None:
+            return Response({"message": f"User with address: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.serializer_class(user)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
+        user = self.get_user(pk)
+        if user == None:
+            return Response({"message": f"User with address: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.serializer_class(
-            note, data=request.data, partial=True)
+            user, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.validated_data['updatedAt'] = datetime.now()
             serializer.save()
-            return Response({"status": "success", "note": serializer.data})
-        return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        note.delete()
+        user = self.get_user(pk)
+        if user is None:
+            return Response({"message": f"User with address: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
+        user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 class CollectionAPI(generics.GenericAPIView):
     serializer_class = CollectionSerializer
     queryset = Collection.objects.all()
 
     def get(self, request):
-        page_num = int(request.GET.get("page", 1))
-        limit_num = int(request.GET.get("limit", 10))
-        start_num = (page_num - 1) * limit_num
-        end_num = limit_num * page_num
-        search_param = request.GET.get("search")
-        notes = Collection.objects.all()
-        total_notes = notes.count()
-        if search_param:
-            notes = notes.filter(title__icontains=search_param)
-        serializer = self.serializer_class(notes[start_num:end_num], many=True)
-        return Response({
-            "status": "success",
-            "total": total_notes,
-            "page": page_num,
-            "last_page": math.ceil(total_notes / limit_num),
-            "notes": serializer.data
-        })
+        req_data = request.GET.dict()
+        print(req_data)
+        collections = Collection.objects.all().filter(**req_data)
+        serializer = self.serializer_class(collections, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({"status": "success", "note": serializer.data}, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class CollectionDetailAPI(generics.GenericAPIView):
     queryset = Collection.objects.all()
     serializer_class = CollectionSerializer
 
-    def get_note(self, pk):
+    def get_collection(self, pk):
         try:
             return Collection.objects.get(pk=pk)
         except:
             return None
 
     def get(self, request, pk):
-        note = self.get_note(pk=pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.serializer_class(note)
-        return Response({"status": "success", "note": serializer.data})
-
-    def patch(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.serializer_class(
-            note, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.validated_data['updatedAt'] = datetime.now()
-            serializer.save()
-            return Response({"status": "success", "note": serializer.data})
-        return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        note.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-class CollectionImageAPI(generics.GenericAPIView):
-    serializer_class = CollectionImageSerializer
-    queryset = CollectionImage.objects.all()
-
-    def get(self, request):
-        page_num = int(request.GET.get("page", 1))
-        limit_num = int(request.GET.get("limit", 10))
-        start_num = (page_num - 1) * limit_num
-        end_num = limit_num * page_num
-        search_param = request.GET.get("search")
-        notes = CollectionImage.objects.all()
-        total_notes = notes.count()
-        if search_param:
-            notes = notes.filter(title__icontains=search_param)
-        serializer = self.serializer_class(notes[start_num:end_num], many=True)
-        return Response({
-            "status": "success",
-            "total": total_notes,
-            "page": page_num,
-            "last_page": math.ceil(total_notes / limit_num),
-            "notes": serializer.data
-        })
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", "note": serializer.data}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-class CollectionImageDetailAPI(generics.GenericAPIView):
-    queryset = CollectionImage.objects.all()
-    serializer_class = CollectionImageSerializer
-
-    def get_note(self, pk):
-        try:
-            return CollectionImage.objects.get(pk=pk)
-        except:
-            return None
-
-    def get(self, request, pk):
-        note = self.get_note(pk=pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.serializer_class(note)
-        return Response({"status": "success", "note": serializer.data})
+        collection = self.get_collection(pk=pk)
+        if collection is None:
+            return Response({"message": f"Collection with address: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.serializer_class(collection)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
+        collection = self.get_collection(pk)
+        if collection == None:
+            return Response({"message": f"Collection with address: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = self.serializer_class(
-            note, data=request.data, partial=True)
+            collection, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.validated_data['updatedAt'] = datetime.now()
             serializer.save()
-            return Response({"status": "success", "note": serializer.data})
-        return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response({"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        note.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-class NFTAPI(generics.GenericAPIView):
-    serializer_class = NFTSerializer
-    queryset = NFT.objects.all()
-
-    def get(self, request):
-        page_num = int(request.GET.get("page", 1))
-        limit_num = int(request.GET.get("limit", 10))
-        start_num = (page_num - 1) * limit_num
-        end_num = limit_num * page_num
-        search_param = request.GET.get("search")
-        notes = NFT.objects.all()
-        total_notes = notes.count()
-        if search_param:
-            notes = notes.filter(title__icontains=search_param)
-        serializer = self.serializer_class(notes[start_num:end_num], many=True)
-        return Response({
-            "status": "success",
-            "total": total_notes,
-            "page": page_num,
-            "last_page": math.ceil(total_notes / limit_num),
-            "notes": serializer.data
-        })
-
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"status": "success", "note": serializer.data}, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-class NFTDetailAPI(generics.GenericAPIView):
-    queryset = NFT.objects.all()
-    serializer_class = NFTSerializer
-
-    def get_note(self, pk):
-        try:
-            return NFT.objects.get(pk=pk)
-        except:
-            return None
-
-    def get(self, request, pk):
-        note = self.get_note(pk=pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.serializer_class(note)
-        return Response({"status": "success", "note": serializer.data})
-
-    def patch(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        serializer = self.serializer_class(
-            note, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.validated_data['updatedAt'] = datetime.now()
-            serializer.save()
-            return Response({"status": "success", "note": serializer.data})
-        return Response({"status": "fail", "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        note = self.get_note(pk)
-        if note == None:
-            return Response({"status": "fail", "message": f"Note with Id: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
-
-        note.delete()
+        collection = self.get_collection(pk)
+        if collection is None:
+            return Response({"message": f"Collection with address: {pk} not found"}, status=status.HTTP_404_NOT_FOUND)
+        collection.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
