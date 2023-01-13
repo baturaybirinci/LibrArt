@@ -24,21 +24,29 @@ export default function services() {
   const contractAddressDex = "0x795035d544D999307e53B8ef1821b2B621e7A795";
   const contractAddressNFT = "0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078";
   const contractAddressToken = "";
-
+// 0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078 7 nft var
   useEffect(() => {
     initWallet();
     initContract();
   }, []);
 
-  const mint = async () => {
-    console.log(nftContract);
-    nftContract.methods
-      .safeMint(selectedAccount, ipfsLinks[0])
+  const mint = async (event) => {
+    event.preventDefault();
+    console.log(event.target.address.value);
+    const web3 = new Web3(window.ethereum);
+    const contract = new web3.eth.Contract(
+      abiPathNft["abi"],
+      event.target.address.value
+    );
+    await ipfsLinks.forEach((link) => {
+        contract.methods
+      .safeMint(selectedAccount, link)
       .send({ from: selectedAccount })
       .then(alert("successfull"))
       .catch((err) => {
         alert(err);
       });
+    })
   };
 
   const initWallet = async () => {
@@ -135,7 +143,6 @@ export default function services() {
         <LibrartNavbar />
         <div style={{ marginTop: "4rem" }}>
           <button onClick={createDex}>CreateDex</button>
-          <button onClick={mint}>mint</button>
           <form onSubmit={createToken}>
             <input type="text" name="name" />
             <input type="text" name="symbol" />
@@ -150,6 +157,11 @@ export default function services() {
             <input type="text" name="address" />
             <button type="submit">Get Name</button>
           </form>
+          <form onSubmit={mint}>
+            <input type="text" name="address" />
+            <button type="submit">Mint</button>
+          </form>
+
         </div>
         <div>{selectedAccount}</div>
       </main>
