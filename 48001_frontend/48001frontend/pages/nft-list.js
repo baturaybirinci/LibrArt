@@ -1,15 +1,19 @@
 import Web3 from "web3";
 import LibrartNavbar from "../components/librart-navbar";
 const abiPathNft = require("../public/TestNFT.json");
+import { useRouter } from 'next/router';
 
 import { useState, useEffect } from "react";
 
-export default function nftList(collectionAddress) {
+export default function nftList() {
     const [list, setList] = useState("");
     const Collections = require("../public/collections.json");
     console.log(Collections, Collections["maxValue"]);
     let items = [];
 
+  const router = useRouter();
+
+  console.log(router.query)
     const name = async(event) => {
         
     }

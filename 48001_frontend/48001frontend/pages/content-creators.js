@@ -1,29 +1,42 @@
 import Head from 'next/head'
-import Container from 'react-bootstrap/Container'
+import {Container, Pagination} from 'react-bootstrap'
 import LibrartNavbar from '../components/librart-navbar';
+import { useState } from "react";
+import { useRouter } from 'next/router';
+import WideCard from '../components/wide-card';
 
-export default function ContentCreators({data, done}) {
+export default function ContentCreators() {
   const Collections = require("../public/collections.json");
   console.log(Collections, Collections["user1Collections"]);
+  const [page, setPage] = useState(1);
+  let items = [];
+  const router = useRouter();
+  for (let number = 1; number <= 5; number++) {
+    items.push(
+      <Pagination.Item
+        key={number}
+        onClick={() => {
+          setPage(number);
+        }}
+      >
+        {number}
+      </Pagination.Item>
+    );
+  }
   return (
     <>
-    
-      <Head>
-        <title>Librart</title>
-        <meta name="description" content="Librart v0.1" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Container>
-      <LibrartNavbar/>
-      <div>
-        <main>
-          {Collections["allContentCreator"].map((addr) => <div key = {addr} >
-          <div>{addr}</div>
-          </div>)}
-        </main>
-      </div>
-      </Container>
+          <LibrartNavbar />
+          <Container>
+            {Collections["allContentCreator"]
+              .slice(5 * (page - 1), 5 * page)
+              .map((element) => (
+                <div key={element}>
+                  <WideCard element={element} click={() => router.push({pathname:'/collection-list',query:element})} />
+                </div>
+              ))}
+            <Pagination>{items}</Pagination>
+          </Container>
+
     </>
   )
 }
