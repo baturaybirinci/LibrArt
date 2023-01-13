@@ -2,9 +2,42 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { useRouter } from 'next/router';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { setUserAddress, logout, login } from '../slices/authSlice';
+import { getUser } from '../helpers/UserHelpers';
 
 function LibrartNavbar() {
   const router = useRouter();
+  const isAuthenticated = useSelector(state => state.isAuthenticated);
+  const dispatch = useDispatch();
+  
+  const handleAuthentication = async () => {
+    if (isAuthenticated) {
+      dispatch(logout());
+    } else {
+      if (window.ethereum) {
+
+        await window.ethereum
+          .request({ method: "eth_requestAccounts" })
+          .then((accounts) => {
+            const address = accounts[0];
+            dispatch(setUserAddress(address));
+            getUser(address).then((user) => {
+              if (user) {
+                dispatch(login(user));
+              }
+              else {
+                //  hata ekle
+              }
+            })
+          });
+      }
+    }
+  }
+
+
+
   return (
     <>
     <div style={{height:'4rem'}}></div>
@@ -18,6 +51,7 @@ function LibrartNavbar() {
             <Nav.Link onClick={() => router.push('/services')}>Services</Nav.Link>
             <Nav.Link onClick={() => router.push('/collection-list')}>Collection List</Nav.Link>
             <Nav.Link onClick={() => router.push('/nft-list')}>Nft List</Nav.Link>
+            <Nav.Link onClick={handleAuthentication}>{isAuthenticated ? "Logout" : "Login"}</Nav.Link>
 
             {/* <Nav.Link onClick={() => router.push('/about')}>About</Nav.Link>
             <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link> */}
