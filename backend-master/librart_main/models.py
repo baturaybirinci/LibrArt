@@ -12,6 +12,7 @@ class User(models.Model):
         default = UserType.MUSEUM
     )
 
+    username = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255, primary_key=True)
