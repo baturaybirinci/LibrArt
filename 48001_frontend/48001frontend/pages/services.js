@@ -29,7 +29,7 @@ export default function services() {
   const contractAddressDex = "0x795035d544D999307e53B8ef1821b2B621e7A795";
   const contractAddressNFT = "0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078";
   const contractAddressToken = "";
-
+// 0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078 7 nft var
   useEffect(() => {
     initWallet();
     initContract();
@@ -43,17 +43,15 @@ export default function services() {
       abiPathNft["abi"],
       event.target.address.value
     );
-  ipfsLinks.forEach((link) => {
-    contract.methods
-    .safeMint(selectedAccount, link)
-    .send({ from: selectedAccount })
-    .then(alert("successfull"))
-    .catch((err) => {
-      alert(err);
-    });
-
-  })
-
+    await ipfsLinks.forEach((link) => {
+        contract.methods
+      .safeMint(selectedAccount, link)
+      .send({ from: selectedAccount })
+      .then(alert("successfull"))
+      .catch((err) => {
+        alert(err);
+      });
+    })
   };
 
   const initWallet = async () => {

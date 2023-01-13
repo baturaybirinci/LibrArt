@@ -13,6 +13,12 @@
   "license": "ISC",
   "dependencies": {
     "@openzeppelin/contracts": "^4.8.0",
-    "truffle-hdwallet-provider": "^1.0.17"
+    "truffle-hdwallet-provider": "^1.0.17",
+    "@next/font": "13.1.1",
+    "bootstrap": "^5.2.3",
+    "next": "13.1.1",
+    "react": "18.2.0",
+    "react-bootstrap": "^2.7.0",
+    "react-dom": "18.2.0"
   }
 }
