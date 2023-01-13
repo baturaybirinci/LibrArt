@@ -10,6 +10,7 @@ export default function collectionList() {
   const [page, setPage] = useState(1);
   let items = [];
   const router = useRouter();
+  console.log(router.query)
   for (let number = 1; number <= 5; number++) {
     items.push(
       <Pagination.Item
