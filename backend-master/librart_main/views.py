@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework import status, generics
+from rest_framework.views import APIView
 from .models import User, Collection
 from .serializers import UserSerializer, CollectionSerializer
 import math
@@ -121,7 +122,7 @@ class CollectionDetailAPI(generics.GenericAPIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class IPFSMetadataAPI(generics.GenericAPIView):
+class IPFSMetadataAPI(APIView):
     def get(self, request):
         result = []
         for f in glob.glob(f'{STATIC_URL}/ipfs_metadata/*.json'):
