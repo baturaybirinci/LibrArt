@@ -1,0 +1,15 @@
+{
+  "name": "nft",
+  "version": "1.0.0",
+  "description": "",
+  "main": "uploadImg.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "form-data": "^4.0.0",
+    "node-fetch": "2.6.6"
+  }
+}

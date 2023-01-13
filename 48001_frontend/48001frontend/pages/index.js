@@ -22,7 +22,7 @@ export default function Home() {
   const abiPathNft = require("../public/TestNft.json");
   const abiPathToken = require("../public/testToken.json");
   const contractAddressDex = '0x795035d544D999307e53B8ef1821b2B621e7A795';
-  const contractAddressNFT = '';
+  const contractAddressNFT = '0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078';
   const contractAddressToken = '';
 
 
@@ -32,6 +32,12 @@ export default function Home() {
     initWallet();
     initContract();
   },[])
+
+  const mint = async () => {
+    console.log(nftContract)
+    nftContract.methods.safeMint(selectedAccount,ipfsLinks[0]).send({from:selectedAccount}).then(alert('successfull')).catch((err) => {alert(err)})
+  } 
+
   const initWallet = async () => {
     if (window.ethereum) {
       await window.ethereum.request({method: 'eth_requestAccounts'}).then((accounts) => {setSelectedAccount(accounts[0])});
@@ -89,6 +95,7 @@ export default function Home() {
     let name = event.target.name.value;
     let symbol = event.target.symbol.value;
     const web3 = new Web3(window.ethereum);
+
     const contract = new web3.eth.Contract(abiPathNft['abi'])
     contract.deploy({data:abiPathNft['bytecode'], arguments:[name,symbol]})
       .send({from:selectedAccount})
@@ -121,6 +128,7 @@ export default function Home() {
       <main>
         <div>
         <button onClick={createDex}>CreateDex</button>
+        <button onClick={mint}>mint</button>
         <form onSubmit={createToken}>
           <input type="text" name='name'/>
           <input type="text" name='symbol'/>
