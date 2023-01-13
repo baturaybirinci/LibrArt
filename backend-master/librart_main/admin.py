@@ -9,8 +9,8 @@ class ContentCreatorModelAdmin(admin.ModelAdmin):
 
 
 class CollectionModelAdmin(admin.ModelAdmin):
-    list_display = ('name', 'owned_by', 'created_at', 'updated_at')
-    search_fields = ('name', 'owned_by__name')
+    list_display = ('name', 'creator', 'created_at', 'updated_at')
+    search_fields = ('name', 'creator__name')
     list_per_page = 25
 
 class CollectionImageModelAdmin(admin.ModelAdmin):
