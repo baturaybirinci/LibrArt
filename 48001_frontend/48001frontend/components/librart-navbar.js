@@ -18,7 +18,7 @@ function LibrartNavbar() {
             <Nav.Link onClick={() => router.push('/services')}>Services</Nav.Link>
             <Nav.Link onClick={() => router.push('/collection-list')}>Collection List</Nav.Link>
             <Nav.Link onClick={() => router.push('/nft-list')}>Nft List</Nav.Link>
-
+            <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link>
             {/* <Nav.Link onClick={() => router.push('/about')}>About</Nav.Link>
             <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link> */}
             {/* <Nav.Link onClick={() => router.push('/collections')}>Collections</Nav.Link> */}

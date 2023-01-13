@@ -27,15 +27,3 @@ export default function ContentCreators({data, done}) {
     </>
   )
 }
-
-export async function getStaticProps() {
-  const response = await fetch("http://127.0.0.1:8000/api/content-creators")
-  const data = await response.json()
-
-  return {
-    props: {
-      data: data,
-      done: true,
-    }
-  }
-}
