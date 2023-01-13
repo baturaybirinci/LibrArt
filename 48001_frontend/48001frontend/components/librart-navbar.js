@@ -52,6 +52,7 @@ function LibrartNavbar() {
             <Nav.Link onClick={() => router.push('/collection-list')}>Collection List</Nav.Link>
             <Nav.Link onClick={() => router.push('/nft-list')}>Nft List</Nav.Link>
             <Nav.Link onClick={handleAuthentication}>{isAuthenticated ? "Logout" : "Login"}</Nav.Link>
+            <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link>
 
             {/* <Nav.Link onClick={() => router.push('/about')}>About</Nav.Link>
             <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link> */}

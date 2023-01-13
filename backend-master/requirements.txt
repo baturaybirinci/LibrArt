@@ -4,3 +4,4 @@ Markdown~=3.4.1
 django-filter~=22.1
 Pillow~=9.4.0
 drf-yasg~=1.21.4
+django-cors-headers==3.13.0
