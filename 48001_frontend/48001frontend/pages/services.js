@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Web3 from "web3";
 import LibrartNavbar from "../components/librart-navbar";
 
-export default function services() {    
+export default function services() {
   const ipfsLinks = [
     "ipfs://bafkreifwitxipij5mcyk5rrixpqbuhedt7ougltpad443l5fjm64qdxaui",
     "ipfs://bafkreigb73kjn3v4crwt3qvafwy3ob5mg32qaug3lsy5z22sfg2un3me4m",
@@ -15,9 +15,9 @@ export default function services() {
     "ipfs://bafkreidmrijsp275c4hpeqewxov4ykrb2xxuqte7s6hu5povisqb4lbzqe",
   ];
   // our metamask addresses
-  const allContentCreator = ['0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B','0xca0EeCdD27B5fC165DcC4e48118bDCFCb431E372']
-  const user1Collections = ['0xfd9aef1a16cce143a6f12d8608d2633e261e9078','0xf82d8c8843ec2AB7C70b8c1928c00409d02083c6']
-  const user2Collections = ['0x6a40341347BB800b0EB25e77222A00513489A10C','0x7f7B5BCbCfCAaE022E480b6452AB4cd11eCD5e59'] // thats me 
+  const allContentCreator = ['0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B', '0xca0EeCdD27B5fC165DcC4e48118bDCFCb431E372']
+  const user1Collections = ['0xfd9aef1a16cce143a6f12d8608d2633e261e9078', '0xf82d8c8843ec2AB7C70b8c1928c00409d02083c6']
+  const user2Collections = ['0x6a40341347BB800b0EB25e77222A00513489A10C', '0x7f7B5BCbCfCAaE022E480b6452AB4cd11eCD5e59'] // thats me
   const maxCollectionVal = 6 // max nft num
   const [selectedAccount, setSelectedAccount] = useState("");
   const [dexContract, setDexContract] = useState("");
@@ -29,7 +29,7 @@ export default function services() {
   const contractAddressDex = "0x795035d544D999307e53B8ef1821b2B621e7A795";
   const contractAddressNFT = "0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078";
   const contractAddressToken = "";
-// 0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078 7 nft var
+  // 0xfD9AEf1a16CcE143A6F12D8608D2633E261e9078 7 nft var
   useEffect(() => {
     initWallet();
     initContract();
@@ -44,13 +44,12 @@ export default function services() {
       event.target.address.value
     );
     await ipfsLinks.forEach((link) => {
-        contract.methods
-      .safeMint(selectedAccount, link)
-      .send({ from: selectedAccount })
-      .then(alert("successfull"))
-      .catch((err) => {
-        alert(err);
-      });
+      contract.methods
+        .safeMint(selectedAccount, link)
+        .send({ from: selectedAccount })
+        .catch((err) => {
+          alert(err);
+        });
     })
   };
 
@@ -144,7 +143,7 @@ export default function services() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <LibrartNavbar/>
+      <LibrartNavbar />
       <main>
         <div>
           <button onClick={createDex}>CreateDex</button>
