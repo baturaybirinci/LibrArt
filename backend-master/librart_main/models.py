@@ -28,7 +28,6 @@ class User(models.Model):
 
 class Collection(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="collections")
-    name = models.CharField(max_length=255)
     address = models.CharField(max_length=255, primary_key=True)
     avatar = models.ImageField(null=True, blank=True)
     banner = models.ImageField(null=True, blank=True)
