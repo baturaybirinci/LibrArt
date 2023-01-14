@@ -1,9 +1,10 @@
 import axios from "axios";
 import { API_PATH } from "../constants";
 
-async function getAllUsers() {
+async function getAllUsers(formData) {
+    let path = `${API_PATH}/user/`;
     try {
-        const res = await axios.get(`${API_PATH}/user/`);
+        const res = await axios.get(`${API_PATH}/user/`,{params:formData});
         return res.data;
     } catch {
         return [];
@@ -35,8 +36,7 @@ async function signUp(formData) {
         const res = await axios.post(`${API_PATH}/user/`, formData);
         return true;
     }
-    catch (e) {
-        console.log(e);
+    catch {
         return false;
     }
 }

@@ -1,16 +1,23 @@
 import { Container, Pagination, Row, Col } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LibrartNavbar from "../components/librart-navbar";
 import WideCard from "../components/wide-card";
 import { useRouter } from 'next/router';
+import { getAllCollections } from "../helpers/CollectionHelpers";
 
 export default function collectionList() {
   // component yaratırken parametre ola
-  const Collections = require("../public/collections.json");
+  const [collections, setCollections] = useState([]);
   const [page, setPage] = useState(1);
   let items = [];
   const router = useRouter();
-  console.log(router.query)
+
+  useEffect(() => {
+    getAllCollections({creator: router.query.address}).then((res) => {
+      setCollections(res);
+    });
+  }, []);
+  
   for (let number = 1; number <= 5; number++) {
     items.push(
       <Pagination.Item
@@ -25,9 +32,10 @@ export default function collectionList() {
   }
   return (
     <>
+    {console.log(collections)}
       <LibrartNavbar />
           <Container>
-            {Collections["user1Collections"]
+            {collections
               .slice(5 * (page - 1), 5 * page)
               .map((element) => (
                 <div key={element}>
