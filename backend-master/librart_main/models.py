@@ -17,6 +17,10 @@ class User(models.Model):
     last_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255, primary_key=True)
     avatar = models.ImageField(null=True, blank=True)
+    
+    @property
+    def is_creator(self):
+        return len(self.collections) != 0
 
     # add banner image
 

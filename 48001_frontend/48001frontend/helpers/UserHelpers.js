@@ -35,7 +35,8 @@ async function signUp(formData) {
         const res = await axios.post(`${API_PATH}/user/`, formData);
         return true;
     }
-    catch {
+    catch (e) {
+        console.log(e);
         return false;
     }
 }
