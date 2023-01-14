@@ -1,5 +1,5 @@
 import { Card, CardGroup, Button, Container } from "react-bootstrap";
-export default function WideCard({ element, click }) {
+export default function WideCard({ element, click,name,symbol,isCollection }) {
   return (
     <>
       <CardGroup>
