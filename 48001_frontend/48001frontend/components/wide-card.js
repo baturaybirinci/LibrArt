@@ -1,18 +1,17 @@
 import { Card, CardGroup, Button, Container } from "react-bootstrap";
-export default function WideCard({ element, click,name,symbol,isCollection }) {
+export default function WideCard({ click, title, explanation }) {
   return (
     <>
       <CardGroup>
         <Card style={{ width: "18rem", padding: "10px" }}>
           {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
           <Card.Body>
-            <Card.Title>{element}</Card.Title>
+            <Card.Title>{title}</Card.Title>
             <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
+              {explanation}
             </Card.Text>
             <Button variant="primary" onClick={ click }>
-              Go somewhere
+              Go to collection
             </Button>
           </Card.Body>
         </Card>

@@ -24,7 +24,8 @@ export default function ContentCreators() {
         {users.map((element) => (
           <div key={element.address}>
             <WideCard
-              element={element.address}
+              title={element.name + " " + element.last_name}
+              explanation={element.address}
               click={() =>
                 router.push({ pathname: "/collection-list", query: element.address })
               }

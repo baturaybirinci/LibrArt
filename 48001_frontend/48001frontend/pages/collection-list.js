@@ -30,7 +30,7 @@ export default function collectionList() {
     return [name,symbol];
   };
 
-
+  console.log(collections, "aaa")
   return (
     <>
       <LibrartNavbar />
@@ -38,7 +38,7 @@ export default function collectionList() {
         {collections.map((element) => (
           <div key={element.address}>
             <WideCard
-              element={element.address}
+              element={element}
               isCollection = {true}
               name = {getNameAndSymbol(element.address)[0]}
               symbol = {getNameAndSymbol(element.address)[1]}
