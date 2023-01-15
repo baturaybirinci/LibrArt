@@ -25,7 +25,7 @@ const styles = {
     top: "50%",
     left: "50%",
     /* bring your own prefixes */
-    transform: "translate(-50%, -25%)",
+    transform: "translate(-50%, -35%)",
     color: "white",
     textAlign: "center",
     fontWeight: "200",
@@ -34,7 +34,7 @@ const styles = {
   mainPageButton: {
     textShadow: "0px 0px 9px rgba(0, 0, 0, 0.96)",
     position: "absolute",
-    transform: "translate(-50%, -555%)",
+    transform: "translate(-50%, -455%)",
     fontSize: "1.3rem",
     border: "1px solid white",
     backgroundColor: "transparent",
