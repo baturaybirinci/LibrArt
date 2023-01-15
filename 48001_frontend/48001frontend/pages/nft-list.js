@@ -14,7 +14,7 @@ export default function nftList() {
   const iter = async () => {
     const web3 = new Web3(window.ethereum);
     const contract = new web3.eth.Contract(abiPathNft["abi"], router.query);
-    console.log(await contract.methods.tokenURI(0).call());
+    // console.log(await contract.methods.tokenURI(0).call());
   };
 
   const lister = async () => {
@@ -38,6 +38,7 @@ export default function nftList() {
     }
   };
   iter();
+  console.log(items, "anan")
   return (
     <>
       <LibrartNavbar />
