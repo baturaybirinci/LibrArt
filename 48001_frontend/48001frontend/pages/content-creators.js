@@ -13,7 +13,6 @@ export default function ContentCreators() {
   useEffect(() => {
     getAllUsers(true).then((res) => {
       setUsers(res);
-      console.log(res)
     });
   }, []);
   const router = useRouter();

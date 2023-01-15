@@ -1,40 +1,26 @@
-import { Container, Pagination, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import LibrartNavbar from "../components/librart-navbar";
 import WideCard from "../components/wide-card";
 import { useRouter } from "next/router";
 import { getAllCollections } from "../helpers/CollectionHelpers";
-import Web3 from "web3";
-
+import { getNameAndSymbol } from "../helpers/web3Helpers";
 export default function collectionList() {
   // component yaratırken parametre ola
   const [collections, setCollections] = useState([]);
   const [items, setItems] = useState([]);
   const router = useRouter();
-  const abiPathNft = require("../public/TestNFT.json");
 
   useEffect(() => {
     getAllCollections({ creator: router.query.address }).then((res) => {
       setCollections(res);
       listCollections(res);
     });
+    console.log(router)
+
   }, []);
 
-  const getNameAndSymbol = async (address) => {
-    console.log(address);
-    const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(
-      abiPathNft["abi"], address
-    );
-    let name, symbol;
-    await contract.methods.name().call().then((res) => name = res)
-    await contract.methods.symbol().call().then((res) => symbol = res)
-    // console.log(name, symbol, "zortr")
-    return { name, symbol };
-  };
-
   const listCollections = async (collections) => {
-    console.log(collections, "sadjbasja");
     let cardList = [];
     const promises = collections.map((element) => {
       return getNameAndSymbol(element.address).then(res => {
@@ -46,7 +32,7 @@ export default function collectionList() {
               explanation={name}
               title={symbol}
               click={() =>
-                router.push({ pathname: "/nft-list", query: {address:element.address} })
+                router.push({ pathname: "/nft-list", query: {'address':element.address} })
               }
             />
           </div>

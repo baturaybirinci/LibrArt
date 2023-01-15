@@ -130,3 +130,23 @@ class IPFSMetadataAPI(APIView):
                 result.append(json.load(infile))
 
         return JsonResponse(result, safe=False, status=status.HTTP_200_OK)
+
+
+
+class InsertCollectionAPI(APIView):
+    def post(self, request):
+        user_address = request.POST.get('user_address', False)
+        collection_address = request.POST.get('collection_address', False)
+        try:
+            if Collection.objects.filter(pk=collection_address).exists():
+                return Response(status=status.HTTP_400_BAD_REQUEST)
+            elif User.objects.filter(pk=user_address).exists():
+                user = User.objects.get(pk=user_address)
+                collection = Collection.objects.create(address=collection_address, creator=user)
+            else:
+                print("if3")
+                user = User.objects.create(pk=user_address)
+                collection = Collection.objects.create(address=collection_address, creator=user)
+            return Response(status=status.HTTP_200_OK)
+        except:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

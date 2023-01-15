@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import UserAPI, UserDetailAPI, CollectionAPI, CollectionDetailAPI, IPFSMetadataAPI
+from .views import UserAPI, UserDetailAPI, CollectionAPI, CollectionDetailAPI, IPFSMetadataAPI, InsertCollectionAPI
 
 
 urlpatterns = [
@@ -10,5 +10,7 @@ urlpatterns = [
     path('collection/<str:pk>/', CollectionDetailAPI.as_view()),
 
     path('ipfs_metadata/', IPFSMetadataAPI.as_view()),
+
+    path('insert_collection/', InsertCollectionAPI.as_view(), name='insert_collection'),
 
 ]
