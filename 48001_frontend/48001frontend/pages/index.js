@@ -18,8 +18,18 @@ function getImages() {
 }*/
 
 const styles = {
-  shadows: {
-    textShadow: "0px 0px 9px rgba(0, 0, 0, 0.66)",
+  mainText: {
+    textShadow: "0px 0px 9px rgba(0, 0, 0, 0.96)",
+    bottom: "200px",
+    position: "absolute", /* or absolute */
+    top: "50%",
+    left: "50%",
+    /* bring your own prefixes */
+    transform: "translate(-50%, -25%)",
+    color: "white",
+    textAlign: "center",
+    fontWeight: "200",
+    fontSize: "2.5rem",
   },
 };
 
@@ -32,27 +42,23 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Container fluid>
+      <Container fluid className={"p-0"}>
         <LibrartNavbar />
-        <Carousel style={{ width: "100%", height: "100%", display: "flex", justifyContent: "center", margin: "auto" }}>
+        <Carousel className={"w-100 vh-100"} style={{ display: "flex", justifyContent: "center", margin: "auto", marginTop: "-56px" }}>
           {
             getImages().map((image) =>
               <Carousel.Item key={image.src}>
                 <img
-                  className="d-block"
+                  className="d-block overflow-hidden mh-100"
                   src={image.src}
                   alt="First slide"
-                  width="100%"
                 />
-                <Carousel.Caption>
-                  <h3 style={styles.shadows}>Experience digital ownership like never before with our NFT marketplace</h3>
-                  <p style={styles.shadows}>Join the NFT revolution and own a piece of the digital future</p>
-                  {/*<Button onClick={alertBrowser} href='https://i.kym-cdn.com/entries/icons/original/000/036/076/Ride_Wife__Life_Good._0-0_screenshot.jpg'>Buy stupid monkey pictures here</Button>*/}
-                </Carousel.Caption>
+
               </Carousel.Item>
             )
           }
         </Carousel>
+        <h3 style={styles.mainText}>Experience digital ownership like never before with our NFT marketplace</h3>
       </Container>
     </>
   )
