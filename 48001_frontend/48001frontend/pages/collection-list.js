@@ -38,10 +38,8 @@ export default function collectionList() {
         {collections.map((element) => (
           <div key={element.address}>
             <WideCard
-              element={element}
-              isCollection = {true}
-              name = {getNameAndSymbol(element.address)[0]}
-              symbol = {getNameAndSymbol(element.address)[1]}
+              explanation={element.address}
+              title={getNameAndSymbol(element.address)[0] + " " + getNameAndSymbol(element.address)[1]}
               click={() =>
                 router.push({ pathname: "/nft-list", query: element.address })
               }
