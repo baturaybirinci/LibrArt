@@ -3,45 +3,39 @@ import LibrartNavbar from "../components/librart-navbar";
 const abiPathNft = require("../public/TestNFT.json");
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { times } from "lodash";
 
 export default function nftList() {
-  const [list, setList] = useState("");
+  const [list, setList] = useState([]);
+  const [adr, setAdr] = useState([]);
   const Collections = require("../public/collections.json");
-  console.log(Collections, Collections["maxValue"]);
   let items = [];
+
   const router = useRouter();
+  
+  const web3 =  new Web3(window.ethereum);
+  const contract =  new web3.eth.Contract(abiPathNft["abi"], '0x5f50e2a874b23fd3e3666975fcde6be20e2a52fa');
 
-  const iter = async () => {
-    const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(abiPathNft["abi"], router.query);
-    console.log(await contract.methods.tokenURI(0).call());
+  const iter = async (i) => {
+
+    const res = await contract.methods.tokenURI(i).call()
+    console.log(res)
+    return res;
   };
-
-  const lister = async () => {
-    for (let number = 0; number <= Collections["maxValue"]; number++) {
-      if (typeof window !== "undefined") {
-        const web3 = new Web3(window.ethereum);
-        const contract = new web3.eth.Contract(
-          abiPathNft["abi"],
-          collectionAddress
-        );
-        console.log(
-          await contract.methods.tokenURI(event.target.number).call()
-        );
-        const json = await contract.methods
-          .tokenURI(event.target.number)
-          .call();
-        items.push(<div key={number}>{json}</div>);
-      }
-
-      setList(items);
+   useEffect(() => {
+    setAdr(router.query.address)
+    for(let i = 0; i < 5; i++){
+      iter(i).then((res) => setList([...list,res])
+      );
     }
-  };
-  iter();
-  return (
+    }, []);
+
+   return (
     <>
       <LibrartNavbar />
-      <div>{list}</div>
+      <div>{list.map((element) => (
+        <div>{element}</div>
+      ))}</div>
     </>
   );
 }

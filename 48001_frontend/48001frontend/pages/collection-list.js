@@ -43,7 +43,7 @@ export default function collectionList() {
               name = {getNameAndSymbol(element.address)[0]}
               symbol = {getNameAndSymbol(element.address)[1]}
               click={() =>
-                router.push({ pathname: "/nft-list", query: element.address })
+                router.push({ pathname: "/nft-list", query: {address:element.address} })
               }
             />
           </div>
