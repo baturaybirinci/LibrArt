@@ -1,5 +1,6 @@
 import Head from 'next/head'
 import { Inter } from '@next/font/google'
+import { useRouter } from 'next/router'
 
 import wp1 from "../public/wallpaper1.png";
 import wp2 from "../public/wallpaper2.png";
@@ -20,20 +21,29 @@ function getImages() {
 const styles = {
   mainText: {
     textShadow: "0px 0px 9px rgba(0, 0, 0, 0.96)",
-    bottom: "200px",
-    position: "absolute", /* or absolute */
+    position: "absolute",
     top: "50%",
     left: "50%",
     /* bring your own prefixes */
-    transform: "translate(-50%, -25%)",
+    transform: "translate(-50%, -35%)",
     color: "white",
     textAlign: "center",
     fontWeight: "200",
     fontSize: "2.5rem",
   },
+  mainPageButton: {
+    textShadow: "0px 0px 9px rgba(0, 0, 0, 0.96)",
+    position: "absolute",
+    transform: "translate(-50%, -455%)",
+    fontSize: "1.3rem",
+    border: "1px solid white",
+    backgroundColor: "transparent",
+    boxShadow: "0px px 9px rgba(0, 0, 0, 0.96)",
+  }
 };
 
 export default function Home() {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -53,12 +63,12 @@ export default function Home() {
                   src={image.src}
                   alt="First slide"
                 />
-
               </Carousel.Item>
             )
           }
         </Carousel>
         <h3 style={styles.mainText}>Experience digital ownership like never before with our NFT marketplace</h3>
+        <Button onClick={() => router.push('/content-creators')} style={styles.mainPageButton} className={"start-50"} variant="primary">Get Started</Button>
       </Container>
     </>
   )
