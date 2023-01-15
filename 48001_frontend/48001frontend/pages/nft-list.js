@@ -28,9 +28,9 @@ export default function nftList() {
       iter(i).then((res) => setList([...list,res])
       );
     }
-    }, []);
-
-   return (
+  });
+  iter();
+  return (
     <>
       <LibrartNavbar />
       <div>{list.map((element) => (
