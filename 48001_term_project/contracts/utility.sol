@@ -74,9 +74,6 @@ contract dex{
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
     function offer(address adr, uint256 id, uint256 price) public {
         IERC721(adr).transferFrom(msg.sender,address(this),id);
         // TODO: Security breach, will be fixed by using a function that does

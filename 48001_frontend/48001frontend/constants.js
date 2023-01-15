@@ -57,4 +57,64 @@ export const TOKEN_URI_ABI = {
   stateMutability: "view",
   type: "function",
 };
-export const DEX_ADDRESS = '0x1C341D201E5F29Af0752BD9De68a1d3A46341Fc5'
+export const OWNER_OF_ABI = {
+  inputs: [
+    {
+      internalType: "uint256",
+      name: "tokenId",
+      type: "uint256",
+    },
+  ],
+  name: "ownerOf",
+  outputs: [
+    {
+      internalType: "address",
+      name: "",
+      type: "address",
+    },
+  ],
+  stateMutability: "view",
+  type: "function",
+};
+export const SELL_NFT_ABI = {
+  inputs: [
+    {
+      internalType: "address",
+      name: "adr",
+      type: "address",
+    },
+    {
+      internalType: "uint256",
+      name: "id",
+      type: "uint256",
+    },
+    {
+      internalType: "uint256",
+      name: "price",
+      type: "uint256",
+    },
+  ],
+  name: "offer",
+  outputs: [],
+  stateMutability: "nonpayable",
+  type: "function",
+};
+export const BUY_NFT_ABI = {
+  inputs: [
+    {
+      internalType: "address",
+      name: "adr",
+      type: "address",
+    },
+    {
+      internalType: "uint256",
+      name: "id",
+      type: "uint256",
+    },
+  ],
+  name: "buy",
+  outputs: [],
+  stateMutability: "payable",
+  type: "function",
+};
+export const DEX_ADDRESS = "0x1C341D201E5F29Af0752BD9De68a1d3A46341Fc5";
