@@ -27,6 +27,12 @@ contract dex{
     
     event buyHappened(address _oldOwner, uint256 _amount, address _newOwner);
     event lockHappened(address _owner, address _tokenAddr, uint256 _lockAmount, uint256 _blockNum);
+    event mintHappened(address _owner, address _tokenAddr, uint256 _mintAmount);
+    event unlockHappened(address _owner, address _tokenAddr, uint256 _tokenID);
+    event sellHappenedErc(address _seller,  address _tokenAddr, uint256 _price, uint256 _amount);
+    event buyHappenedErc(address _seller,  address _buyer, address _tokenAddr, uint256 _price, uint256 _amount);
+
+
 
 
 
@@ -94,13 +100,15 @@ contract dex{
     }
 
 
-    
+ 
     function lock(address adr, uint256 id, uint256 amount) public {
         IERC721(adr).transferFrom(msg.sender,address(this),id); //Msg.sender dan contract adresine kitler, Approve() needed diye okudum ?
         lockedNfts[adr][id] = lockedNft(msg.sender,address(this),amount,block.number);
 
         emit lockHappened(msg.sender, address(this), amount, block.number);
     }
+    
+
 
     function mint(address adr, uint256 id, address tokenAdr) public {
         require(lockedNfts[adr][id].owner == msg.sender);
@@ -108,8 +116,11 @@ contract dex{
         require(IERC20(tokenAdr).totalSupply() == lockedNfts[adr][id].tokenAmount ); // or > 0
         lockedNfts[adr][id].tokenAddress = tokenAdr;
         IERC20(tokenAdr).transferFrom(address(this), msg.sender, lockedNfts[adr][id].tokenAmount);
+
+        emit mintHappened(msg.sender, lockedNfts[adr][id].tokenAddress, lockedNfts[adr][id].tokenAmount);
     }
 
+    
     //erc 20 tokeni oldugundan emin ol
     function unlock(address adr, uint256 id) public {
         require(lockedNfts[adr][id].blockHeight+128 <= block.number);
@@ -117,17 +128,26 @@ contract dex{
                 || (IERC20(lockedNfts[adr][id].tokenAddress).totalSupply() == 0), "cannot be unlocked");
         // TODO: make sure the person who invokes this function owns all tokens.
             IERC721(adr).transferFrom(address(this),msg.sender,id);
+        
+        emit unlockHappened(msg.sender, adr, id);
     }
-    
+
+
     function sellErc20(address adr, uint256 price, uint256 amount) public{
         IERC20(adr).transferFrom(msg.sender,address(this),amount);
         offeredTokens[adr][msg.sender] = token(amount,price);
+
+        emit sellHappenedErc(msg.sender, adr, price, amount);
     }
+
+
     function buyErc20(address adr, address seller, uint256 amount ) public payable {
         require(msg.value == offeredTokens[adr][seller].price);
         delete offeredTokens[adr][seller]; // DELETE ?
         IERC20(adr).transferFrom(address(this),msg.sender,amount);
         payable(seller).transfer(msg.value);
+
+        emit buyHappenedErc(seller, msg.sender, adr, msg.value, amount);
         
     }
 }
