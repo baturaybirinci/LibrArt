@@ -26,7 +26,7 @@ export default function ContentCreators() {
               title={element.name + " " + element.last_name}
               explanation={element.address}
               click={() =>
-                router.push({ pathname: "/collection-list", query: element.address })
+                router.push({ pathname: "/collection-list", query: { address: [element.address] } })
               }
             />
           </div>

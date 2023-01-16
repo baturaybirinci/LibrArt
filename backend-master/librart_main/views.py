@@ -71,9 +71,8 @@ class CollectionAPI(generics.GenericAPIView):
     queryset = Collection.objects.all()
 
     def get(self, request):
-        req_data = request.GET.dict()
-        print(req_data)
-        collections = Collection.objects.all().filter(**req_data)
+        req_data = request.GET.get("address", None)
+        collections = Collection.objects.all().filter(creator=req_data)
         serializer = self.serializer_class(collections, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

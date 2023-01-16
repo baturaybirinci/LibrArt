@@ -12,13 +12,14 @@ export default function collectionList() {
   const router = useRouter();
 
   useEffect(() => {
-    getAllCollections({ creator: router.query.address }).then((res) => {
-      setCollections(res);
-      listCollections(res);
-    });
-    console.log(router)
-
-  }, []);
+    if (router.isReady) {
+      getAllCollections({ address: router.query.address }).then((res) => {
+        console.log(router.query.address)
+        setCollections(res);
+        listCollections(res);
+      });
+    }
+  }, [router.isReady]);
 
   const listCollections = async (collections) => {
     let cardList = [];
@@ -32,7 +33,7 @@ export default function collectionList() {
               explanation={name}
               title={symbol}
               click={() =>
-                router.push({ pathname: "/nft-list", query: {'address':element.address} })
+                router.push({ pathname: "/nft-list", query: { 'address': element.address } })
               }
             />
           </div>

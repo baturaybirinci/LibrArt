@@ -6,7 +6,7 @@ async function getAllUsers() {
     try {
         const res = await axios.get(`${API_PATH}/user/`);
         return res.data;
-    } catch (error){
+    } catch (error) {
         console.error(error)
         return [];
     }
@@ -17,7 +17,7 @@ async function getUser(address) {
         const res = await axios.get(`${API_PATH}/user/${address}/`);
         return res.data;
     }
-    catch (error){
+    catch (error) {
         console.error(error)
         return null;
     }
@@ -28,7 +28,7 @@ async function getUserCollections(address) {
         const res = await axios.get(`${API_PATH}/collection/?creator=${address}`);
         return res.data;
     }
-    catch (error){
+    catch (error) {
         console.error(error)
         return [];
     }
@@ -39,9 +39,9 @@ async function signUp(formData) {
         const res = await axios.post(`${API_PATH}/user/`, formData);
         return true;
     }
-    catch (error){
+    catch (error) {
         console.error(error)
-        
+
         return false;
     }
 }
@@ -51,10 +51,10 @@ async function updateUser(id, formData) {
         const res = await axios.patch(`${API_PATH}/user/${id}/`, formData);
         return true;
     }
-    catch (error){
+    catch (error) {
         console.error(error)
         return false;
     }
 }
 
-export {getAllUsers, getUser, getUserCollections, signUp, updateUser};
+export { getAllUsers, getUser, getUserCollections, signUp, updateUser };
