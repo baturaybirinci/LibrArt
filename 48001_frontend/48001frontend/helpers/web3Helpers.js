@@ -111,7 +111,7 @@ async function initWallet() {
 async function tokenURI(address, id) {
   console.log(address, id);
   const WEB3 = new Web3(window.ethereum);
-  const contract = new WEB3.eth.Contract(NFT_JSON.abi, address);
+  const contract = new WEB3.eth.Contract(NFT_JSON['abi'], address);
   console.log(contract);
   let ret;
   await contract.methods
