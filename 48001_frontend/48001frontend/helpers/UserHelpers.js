@@ -36,12 +36,10 @@ async function getUserCollections(address) {
 
 async function signUp(formData) {
     try {
-        const res = await axios.post(`${API_PATH}/user/`, formData);
-        return true;
+        return await axios.post(`${API_PATH}/user/`, formData);
     }
     catch (error) {
         console.error(error)
-
         return false;
     }
 }

@@ -28,7 +28,7 @@ function LibrartNavbar() {
                 dispatch(login(user));
               }
               else {
-                alert("Login failed");
+                router.push("/register");
               }
             })
           });
