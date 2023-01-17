@@ -1,5 +1,5 @@
 import { Card, CardGroup, Button, Container } from "react-bootstrap";
-export default function WideCard({ click, title, explanation, imgSrc }) {
+export default function WideCard({ click, title, explanation, imgSrc, buttonText }) {
   return (
     <>
       <CardGroup>
@@ -11,7 +11,7 @@ export default function WideCard({ click, title, explanation, imgSrc }) {
               {explanation}
             </Card.Text>
             <Button variant="primary" onClick={ click }>
-              Go to collection
+              {buttonText}
             </Button>
           </Card.Body>
         </Card>

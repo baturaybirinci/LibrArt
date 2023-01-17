@@ -11,7 +11,7 @@ export default function nft() {
   const [dexContract, setDexContract] = useState("");
   const [price, setPrice] = useState("");
   const [owner, setOwner] = useState("");
-  const dummyAddress = "0x7f7B5BCbCfCAaE022E480b6452AB4cd11eCD5e59";
+  const dummyAddress = "0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B";
   const [selectedAccount, setSelectedAccount] = useState("");
 
   useEffect(() => {
@@ -43,6 +43,11 @@ export default function nft() {
   const buy = async (event) => {
     console.log('will do buy')
   }
+  // const lockNft = async (event) => {
+  //   event.preventDefault();
+  //   console.log(event)
+  //   await lock(dummyAddress,0,event.target.amount.value)
+  // }
   return (
     <>
       <LibrartNavbar />
@@ -54,6 +59,11 @@ export default function nft() {
         <input type="text" name="price" />
         <button type="submit">sell</button>
       </form>
+      {/* <form onSubmit={lock}>
+        <input type="text" name="amount" />
+        <button type="submit">lock</button>
+      </form> */}
+      
     </>
   );
 }

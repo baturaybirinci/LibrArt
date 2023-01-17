@@ -35,6 +35,7 @@ export default function collectionList() {
               click={() =>
                 router.push({ pathname: "/nft-list", query: { 'address': element.address } })
               }
+              buttonText={"Browse collection"}
             />
           </div>
         );

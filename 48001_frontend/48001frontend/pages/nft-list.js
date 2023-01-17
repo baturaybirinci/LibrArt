@@ -15,10 +15,8 @@ export default function nftList() {
     if (!isIterated)
       for (let i = 0; i < 5; i++)
         tokenURI(dummyAddress, i).then((res) => {
-          console.log(res);
           getIPFSjson(res.substring(res.lastIndexOf("/") + 1, res.length)).then(
             (resp) => {
-              console.log(resp)
               setList(list => [...list, resp]);
             }
           )
@@ -28,18 +26,15 @@ export default function nftList() {
 
   useEffect(() => {
     setAdr(router.query.address);
-    console.log(router);
-
     iter();
   }, []);
 
   return (
     <>
       <LibrartNavbar />
-      {console.log(list)}
-      <div>
+      <>
         {list.map((element) => (
-          <>
+          <div key={element["name"]}>
             <WideCard
               click={() =>
                 router.push({
@@ -50,10 +45,11 @@ export default function nftList() {
               title={element["name"]}
               explanation={element["description"]}
               imgSrc={element["image"]}
+              buttonText={"View NFT"}
             />
-          </>
+          </div>
         ))}
-      </div>
+      </>
     </>
   );
 }

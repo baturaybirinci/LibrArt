@@ -2,8 +2,8 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import Web3 from "web3";
 import LibrartNavbar from "../components/librart-navbar";
-import { getNameAndSymbol,initWallet } from "../helpers/web3Helpers";
-import { DEX_JSON } from "../constants";
+import { getNameAndSymbol,initWallet,aprove } from "../helpers/web3Helpers";
+import { DEX_JSON,NFT_JSON,TOKEN_JSON } from "../constants";
 export default function services() {
   // our metamask addresses
   const [selectedAccount, setSelectedAccount] = useState("");
@@ -20,7 +20,7 @@ export default function services() {
     event.preventDefault();
     console.log(event.target.address.value);
     const contract = new web3.eth.Contract(
-      abiPathNft["abi"],
+      NFT_JSON["abi"],
       event.target.address.value
     );
     await ipfsLinks.forEach((link) => {
@@ -41,9 +41,9 @@ export default function services() {
       try {
         let cont = new web3.eth.Contract(abiPathDex["abi"], contractAddressDex);
         setDexContract(cont);
-        cont = new web3.eth.Contract(abiPathNft["abi"], contractAddressNFT);
+        cont = new web3.eth.Contract(NFT_JSON["abi"], contractAddressNFT);
         setNftContract(cont);
-        cont = new web3.eth.Contract(abiPathToken["abi"], contractAddressToken);
+        cont = new web3.eth.Contract(TOKEN_JSON["abi"], contractAddressToken);
         setTokenContract(cont);
       } catch (err) {
         alert(err);
@@ -74,29 +74,46 @@ export default function services() {
     let symbol = event.target.symbol.value;
     const web3 = new Web3(window.ethereum);
 
-    const contract = new web3.eth.Contract(abiPathNft["abi"]);
+    const contract = new web3.eth.Contract(NFT_JSON["abi"]);
     contract
-      .deploy({ data: abiPathNft["bytecode"], arguments: [name, symbol] })
+      .deploy({ data: NFT_JSON["bytecode"], arguments: [name, symbol] })
       .send({ from: selectedAccount })
       .on("receipt", (receipt) => {
         console.log("nft collection address : ", receipt.contractAddress);
         alert(receipt.contractAddress);
       });
   };
+  const mintToken = async(event) => {
+    event.preventDefault();
+    let toAddress = event.target.toaddress.value;
+    let address = event.target.address.value;
+    let amount = event.target.amount.value;
+    const web3 = new Web3(window.ethereum);
+    const contract = new web3.eth.Contract(TOKEN_JSON["abi"],address);
+    console.log(contract.methods)
+    await contract.methods
+    .mint(toAddress,amount)
+    .send({ from: selectedAccount })
+  }
   const createToken = async (event) => {
     event.preventDefault();
     let name = event.target.name.value;
     let symbol = event.target.symbol.value;
     const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(abiPathToken["abi"]);
+    const contract = new web3.eth.Contract(TOKEN_JSON["abi"]);
     contract
-      .deploy({ data: abiPathToken["bytecode"], arguments: [name, symbol] })
+      .deploy({ data: TOKEN_JSON["bytecode"], arguments: [name, symbol] })
       .send({ from: selectedAccount })
       .on("receipt", (receipt) => {
         console.log("Token address : ", receipt.contractAddress);
         alert(receipt.contractAddress);
       });
   };
+  const approveNft = async (event) => {
+    event.preventDefault()
+    console.log(event)
+      await aprove(event.target.address.value,0)
+  }
   return (
     <>
       <Head>
@@ -108,7 +125,7 @@ export default function services() {
       <LibrartNavbar />
       <main>
         <div>
-          <button onClick={createDex}>CreateDex</button>
+        <button onClick={createDex}>CreateDex</button>
           <form onSubmit={createToken}>
             <input type="text" name="name" />
             <input type="text" name="symbol" />
@@ -126,6 +143,16 @@ export default function services() {
           <form onSubmit={mint}>
             <input type="text" name="address" />
             <button type="submit">Mint</button>
+          </form>
+          <form onSubmit={approveNft}>
+            <input type="text" name="address" />
+            <button type="submit">approve</button>
+          </form>          
+          <form onSubmit={mintToken}>
+          <input type="text" name="toaddress" />
+          <input type="text" name="address" />
+            <input type="number" name="amount" />
+            <button type="submit">approve</button>
           </form>
 
         </div>

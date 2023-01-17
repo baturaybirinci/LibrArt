@@ -28,6 +28,7 @@ export default function ContentCreators() {
               click={() =>
                 router.push({ pathname: "/collection-list", query: { address: [element.address] } })
               }
+              buttonText={"Browse Collections"}
             />
           </div>
         ))}

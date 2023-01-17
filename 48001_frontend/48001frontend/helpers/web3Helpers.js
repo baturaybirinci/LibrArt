@@ -53,11 +53,22 @@ async function getOwnerOf(address, id) {
 async function aprove(address, id) {
   const WEB3 = new Web3(window.ethereum);
   const contract = new WEB3.eth.Contract(NFT_JSON["abi"], address);
+  console.log('aproving')
   await contract.methods
     .approve(DEX_ADDRESS, id)
     .send({ from: "0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B" });
 }
+// async function lock(address, id, price) {
+//   console.log(address, id, price);
+//   await aprove(address, 0);
+//   const WEB3 = new Web3(window.ethereum);
+//   const contract = new WEB3.eth.Contract([SELL_NFT_ABI], DEX_ADDRESS);
+//   await contract.methods
+//     .lock(address, id, price)
+//     .send({ from: "0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B" })
+//     .then((res) => console.log(res));
 
+// }
 async function sell(address, id, price) {
   console.log(address, id, price);
   await aprove(address, 0);

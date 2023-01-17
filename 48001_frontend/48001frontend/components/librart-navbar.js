@@ -28,7 +28,7 @@ function LibrartNavbar() {
                 dispatch(login(user));
               }
               else {
-                //  hata ekle
+                alert("Login failed");
               }
             })
           });
