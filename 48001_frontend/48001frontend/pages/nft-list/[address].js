@@ -1,14 +1,15 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { tokenURI, getIPFSjson } from "../helpers/web3Helpers";
-import WideCard from "../components/wide-card";
-import LibrartNavbar from "../components/librart-navbar";
+import { tokenURI, getIPFSjson } from "../../helpers/web3Helpers";
+import WideCard from "../../components/wide-card";
+import LibrartNavbar from "../../components/librart-navbar";
 
-export default function nftList() {
+export default function address() {
   const [list, setList] = useState([]);
   const [adr, setAdr] = useState([]);
   let isIterated = false;
   const router = useRouter();
+
   const dummyAddress = "0x7f7B5BCbCfCAaE022E480b6452AB4cd11eCD5e59";
 
   const iter = async () => {
@@ -28,7 +29,6 @@ export default function nftList() {
 
   useEffect(() => {
     setAdr(router.query.address);
-    console.log(router);
 
     iter();
   }, []);
@@ -38,21 +38,22 @@ export default function nftList() {
       <LibrartNavbar />
       {console.log(list)}
       <div>
-        {list.map((element) => (
-          <>
-            <WideCard
-              click={() =>
-                router.push({
-                  pathname: "/nft",
-                  query: { address: dummyAddress, id: 0 },
-                })
-              }
-              title={element["name"]}
-              explanation={element["description"]}
-              imgSrc={element["image"]}
-            />
-          </>
-        ))}
+        {list.map((element, index) => {
+          console.log(element);
+          return (
+              <>
+                <WideCard
+                    buttonText={"View NFT"}
+                    click={() =>
+                        router.push(`/nft/${router.query.address}/${index}`)
+                    }
+                    title={element["name"]}
+                    explanation={element["description"]}
+                    imgSrc={element["image"]}
+                />
+              </>
+          )
+        })}
       </div>
     </>
   );

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Web3 from "web3";
 import LibrartNavbar from "../components/librart-navbar";
 import { getNameAndSymbol,initWallet } from "../helpers/web3Helpers";
-import { DEX_JSON } from "../constants";
+import { DEX_JSON, NFT_JSON } from "../constants";
 export default function services() {
   // our metamask addresses
   const [selectedAccount, setSelectedAccount] = useState("");
@@ -20,7 +20,7 @@ export default function services() {
     event.preventDefault();
     console.log(event.target.address.value);
     const contract = new web3.eth.Contract(
-      abiPathNft["abi"],
+      NFT_JSON["abi"],
       event.target.address.value
     );
     await ipfsLinks.forEach((link) => {
@@ -41,7 +41,7 @@ export default function services() {
       try {
         let cont = new web3.eth.Contract(abiPathDex["abi"], contractAddressDex);
         setDexContract(cont);
-        cont = new web3.eth.Contract(abiPathNft["abi"], contractAddressNFT);
+        cont = new web3.eth.Contract(NFT_JSON["abi"], contractAddressNFT);
         setNftContract(cont);
         cont = new web3.eth.Contract(abiPathToken["abi"], contractAddressToken);
         setTokenContract(cont);
@@ -74,12 +74,12 @@ export default function services() {
     let symbol = event.target.symbol.value;
     const web3 = new Web3(window.ethereum);
 
-    const contract = new web3.eth.Contract(abiPathNft["abi"]);
+    const contract = new web3.eth.Contract(NFT_JSON["abi"]);
     contract
-      .deploy({ data: abiPathNft["bytecode"], arguments: [name, symbol] })
+      .deploy({ data: NFT_JSON["bytecode"], arguments: [name, symbol] })
       .send({ from: selectedAccount })
       .on("receipt", (receipt) => {
-        console.log("nft collection address : ", receipt.contractAddress);
+        console.log("id collection address : ", receipt.contractAddress);
         alert(receipt.contractAddress);
       });
   };

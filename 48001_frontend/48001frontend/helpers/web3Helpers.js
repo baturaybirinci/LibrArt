@@ -73,6 +73,7 @@ async function getNameAndSymbol(address) {
   const WEB3 = new Web3(window.ethereum);
   const contract = new WEB3.eth.Contract([NAME_ABI, SYMBOL_ABI], address);
   let name, symbol;
+  console.log(contract.methods);
   await contract.methods
     .name()
     .call()
@@ -110,28 +111,8 @@ async function tokenURI(address, id) {
   return ret;
 }
 
-export function useNFTMintEvents(contractAddress) {
-  //   const [events, setEvents] = useState([])
-  //   const web3 = useWeb3()
-  
-  //   useEffect(() => {
-  //     async function getEvents() {
-  //       const contract = new web3.eth.Contract(contractABI, contractAddress)
-  //       const pastEvents = await contract.getPastEvents('Transfer', {
-  //         filter: {to: contractAddress},
-  //         fromBlock: 0,
-  //         toBlock: 'latest'
-  //       })
-  //       setEvents(pastEvents)
-  //     }
-  //     if (web3) {
-  //       getEvents()
-  //     }
-  //   }, [web3, contractAddress])
-  //   return events
-  }
-  
-  
+
+
 
 export {
   tokenURI,
