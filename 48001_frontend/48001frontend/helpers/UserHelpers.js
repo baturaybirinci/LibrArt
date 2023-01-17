@@ -1,10 +1,10 @@
 import axios from "axios";
 import { API_PATH } from "../constants";
 
-async function getAllUsers() {
+async function getAllUsers(query) {
     let path = `${API_PATH}/user/`;
     try {
-        const res = await axios.get(`${API_PATH}/user/`);
+        const res = await axios.get(`${API_PATH}/user/`, {params: query});
         return res.data;
     } catch (error) {
         console.error(error)

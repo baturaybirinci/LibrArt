@@ -6,14 +6,8 @@ import { useRouter } from "next/router";
 import WideCard from "../components/wide-card";
 import { getAllUsers } from "../helpers/UserHelpers";
 
-export default function ContentCreators() {
-  const [users, setUsers] = useState([]);
+export default function ContentCreators({users}) {
 
-  useEffect(() => {
-    getAllUsers(true).then((res) => {
-      setUsers(res);
-    });
-  }, []);
   const router = useRouter();
   return (
     <>
@@ -33,4 +27,13 @@ export default function ContentCreators() {
       </Container>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+    const users = await getAllUsers({ is_creator: true });
+    return {
+        props: {
+            users,
+        }
+    }
 }

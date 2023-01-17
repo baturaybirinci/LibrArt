@@ -1,15 +1,16 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
 class User(models.Model):
     class UserType(models.TextChoices):
         MUSEUM = 'MU', _('Museum')
         INDIVIDUAL = 'IN', _('Individual')
 
     user_type = models.CharField(
-        max_length = 2,
-        choices = UserType.choices,
-        default = UserType.MUSEUM
+        max_length=2,
+        choices=UserType.choices,
+        default=UserType.MUSEUM
     )
 
     username = models.CharField(max_length=255)
@@ -17,7 +18,7 @@ class User(models.Model):
     last_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255, primary_key=True)
     avatar = models.ImageField(null=True, blank=True)
-    
+
     @property
     def is_creator(self):
         return len(self.collections) != 0
@@ -27,7 +28,6 @@ class User(models.Model):
     def get_user_type(self) -> UserType:
         # Get value from choices enum
         return self.UserType[self.user_type]
-
 
 
 class Collection(models.Model):
