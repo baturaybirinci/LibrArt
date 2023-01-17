@@ -50,12 +50,12 @@ async function getOwnerOf(address, id) {
   return owner;
 }
 
-async function aprove(address, id) {
+async function approve(collectionAddress, nftID) {
   const WEB3 = new Web3(window.ethereum);
-  const contract = new WEB3.eth.Contract(NFT_JSON["abi"], address);
+  const contract = new WEB3.eth.Contract(NFT_JSON["abi"], collectionAddress);
   console.log('aproving')
   await contract.methods
-    .approve(DEX_ADDRESS, id)
+    .approve(DEX_ADDRESS, nftID)
     .send({ from: "0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B" });
 }
 // async function lock(address, id, price) {
@@ -69,15 +69,24 @@ async function aprove(address, id) {
 //     .then((res) => console.log(res));
 
 // }
-async function sell(address, id, price) {
-  console.log(address, id, price);
-  await aprove(address, 0);
+async function sell(userAddress, collectionAddress, nftID, price) {
+  await approve(collectionAddress, nftID);
   const WEB3 = new Web3(window.ethereum);
   const contract = new WEB3.eth.Contract([SELL_NFT_ABI], DEX_ADDRESS);
   await contract.methods
-    .offer(address, id, price)
-    .send({ from: "0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B" })
+    .offer(collectionAddress, id, price)
+    .send({ from: userAddress })
     .then((res) => console.log(res));
+}
+
+async function buy(userAddress, collectionAddress, nftID, price) {
+  await approve(collectionAddress, nftID);
+  const WEB3 = new Web3(window.ethereum);
+  const contract = new WEB3.eth.Contract([BUY_NFT_ABI], DEX_ADDRESS);
+  await contract.methods
+      .buy(collectionAddress, nftID)
+      .send({ from: userAddress, value: price })
+      .then((res) => console.log(res));
 }
 
 async function getNameAndSymbol(address) {
@@ -111,7 +120,7 @@ async function initWallet() {
 async function tokenURI(address, id) {
   console.log(address, id);
   const WEB3 = new Web3(window.ethereum);
-  const contract = new WEB3.eth.Contract(NFT_JSON.abi, address);
+  const contract = new WEB3.eth.Contract(NFT_JSON['abi'], address);
   console.log(contract);
   let ret;
   await contract.methods
@@ -133,5 +142,5 @@ export {
   initDex,
   getOwnerOf,
   sell,
-  aprove,
+  approve,
 };

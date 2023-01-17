@@ -16,12 +16,12 @@ export default function ContentCreators({users}) {
         {users.map((element) => (
           <div key={element.address}>
             <WideCard
-              title={element.name + " " + element.last_name}
+                buttonText={"Browse Collections"}
+                title={element.name + " " + element.last_name}
               explanation={element.address}
               click={() =>
                 router.push(`/collection-list/${element.address}`)
               }
-              buttonText={"Browse Collections"}
             />
           </div>
         ))}

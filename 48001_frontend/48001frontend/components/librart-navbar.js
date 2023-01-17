@@ -28,7 +28,7 @@ function LibrartNavbar() {
                 dispatch(login(user));
               }
               else {
-                alert("Login failed");
+                router.push("/register");
               }
             })
           });
@@ -49,9 +49,8 @@ function LibrartNavbar() {
           <Nav className="me-auto">
             <Nav.Link onClick={() => router.push('/content-creators')}>Content Creators</Nav.Link>
             <Nav.Link onClick={() => router.push('/services')}>Services</Nav.Link>
+            {isAuthenticated && <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link>}
             <Nav.Link onClick={handleAuthentication}>{isAuthenticated ? "Logout" : "Login"}</Nav.Link>
-            <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link>
-
             {/* <Nav.Link onClick={() => router.push('/about')}>About</Nav.Link>
             <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link> */}
             {/* <Nav.Link onClick={() => router.push('/collections')}>Collections</Nav.Link> */}
