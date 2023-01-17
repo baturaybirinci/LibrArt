@@ -37,7 +37,8 @@ import {login} from "../slices/authSlice";
                 dispatch(login(user));
                 router.push("/profile");
             }
-    })
+        })
+    }, []);
 
 
      const getFormData = async () => {
