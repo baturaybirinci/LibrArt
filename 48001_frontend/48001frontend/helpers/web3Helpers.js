@@ -31,9 +31,7 @@ async function initDex() {
 
 async function getIPFSjson(link) {
   try {
-    console.log(link);
     const res = await axios.get("https://ipfs.io/ipfs/" + link);
-    console.log(res);
     return res.data;
   } catch (error) {
     console.error(error);
@@ -111,6 +109,29 @@ async function tokenURI(address, id) {
   console.log(ret);
   return ret;
 }
+
+export function useNFTMintEvents(contractAddress) {
+  //   const [events, setEvents] = useState([])
+  //   const web3 = useWeb3()
+  
+  //   useEffect(() => {
+  //     async function getEvents() {
+  //       const contract = new web3.eth.Contract(contractABI, contractAddress)
+  //       const pastEvents = await contract.getPastEvents('Transfer', {
+  //         filter: {to: contractAddress},
+  //         fromBlock: 0,
+  //         toBlock: 'latest'
+  //       })
+  //       setEvents(pastEvents)
+  //     }
+  //     if (web3) {
+  //       getEvents()
+  //     }
+  //   }, [web3, contractAddress])
+  //   return events
+  }
+  
+  
 
 export {
   tokenURI,

@@ -11,7 +11,7 @@ export default function nft() {
   const [dexContract, setDexContract] = useState("");
   const [price, setPrice] = useState("");
   const [owner, setOwner] = useState("");
-  const dummyAddress = "0x5f50e2a874b23fd3e3666975fcde6be20e2a52fa";
+  const dummyAddress = "0x7f7B5BCbCfCAaE022E480b6452AB4cd11eCD5e59";
   const [selectedAccount, setSelectedAccount] = useState("");
 
   useEffect(() => {
