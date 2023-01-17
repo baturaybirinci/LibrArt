@@ -18,7 +18,7 @@ import { getNameAndSymbol } from "../../helpers/web3Helpers";
   const getCollectionData = async () => {
       let data = [];
       for (let collection of collections) {
-          await getNameAndSymbol(collection.address).then((res) => data.push({...res, address}));
+          await getNameAndSymbol(collection.address).then((res) => data.push({...res, address: collection.address}));
       }
       return data;
   }
