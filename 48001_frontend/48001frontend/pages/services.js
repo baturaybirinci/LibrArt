@@ -79,7 +79,7 @@ export default function services() {
       .deploy({ data: NFT_JSON["bytecode"], arguments: [name, symbol] })
       .send({ from: selectedAccount })
       .on("receipt", (receipt) => {
-        console.log("nft collection address : ", receipt.contractAddress);
+        console.log("id collection address : ", receipt.contractAddress);
         alert(receipt.contractAddress);
       });
   };

@@ -5,16 +5,9 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import WideCard from "../components/wide-card";
 import { getAllUsers } from "../helpers/UserHelpers";
-import { add } from "lodash";
 
-export default function ContentCreators() {
-  const [users, setUsers] = useState([]);
+export default function ContentCreators({users}) {
 
-  useEffect(() => {
-    getAllUsers(true).then((res) => {
-      setUsers(res);
-    });
-  }, []);
   const router = useRouter();
   return (
     <>
@@ -26,7 +19,7 @@ export default function ContentCreators() {
               title={element.name + " " + element.last_name}
               explanation={element.address}
               click={() =>
-                router.push({ pathname: "/collection-list", query: { address: [element.address] } })
+                router.push(`/collection-list/${element.address}`)
               }
               buttonText={"Browse Collections"}
             />
@@ -35,4 +28,13 @@ export default function ContentCreators() {
       </Container>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+    const users = await getAllUsers({ is_creator: true });
+    return {
+        props: {
+            users,
+        }
+    }
 }

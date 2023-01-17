@@ -11,7 +11,7 @@ function LibrartNavbar() {
   const router = useRouter();
   const isAuthenticated = useSelector(state => state.isAuthenticated);
   const dispatch = useDispatch();
-  
+
   const handleAuthentication = async () => {
     if (isAuthenticated) {
       dispatch(logout());
@@ -49,8 +49,6 @@ function LibrartNavbar() {
           <Nav className="me-auto">
             <Nav.Link onClick={() => router.push('/content-creators')}>Content Creators</Nav.Link>
             <Nav.Link onClick={() => router.push('/services')}>Services</Nav.Link>
-            <Nav.Link onClick={() => router.push('/collection-list')}>Collection List</Nav.Link>
-            <Nav.Link onClick={() => router.push('/nft-list')}>Nft List</Nav.Link>
             <Nav.Link onClick={handleAuthentication}>{isAuthenticated ? "Logout" : "Login"}</Nav.Link>
             <Nav.Link onClick={() => router.push('/profile')}>Profile</Nav.Link>
 

@@ -7,6 +7,7 @@ import math
 from datetime import datetime
 from librart_backend.settings import STATIC_URL
 from django.http import JsonResponse
+from django.db.models import F
 import glob
 import json
 
@@ -16,7 +17,10 @@ class UserAPI(generics.GenericAPIView):
     queryset = User.objects.all()
 
     def get(self, request):
-        users = User.objects.all()
+        req_data = request.GET.copy()
+        users = self.queryset
+        if req_data.pop('is_creator', False):
+            users = users.exclude(collections__isnull=True)
         serializer = self.serializer_class(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

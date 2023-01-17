@@ -10,14 +10,6 @@ import { Button, Carousel, Container } from 'react-bootstrap'
 import LibrartNavbar from '../components/librart-navbar';
 
 
-function getImages() {
-  return [wp1, wp2, wp3, wp4];
-}
-
-/*function alertBrowser() {
-  alert("Goril maymun resmi almak, goril zengin olmak");
-}*/
-
 const styles = {
   mainText: {
     textShadow: "0px 0px 9px rgba(0, 0, 0, 0.96)",
@@ -42,7 +34,7 @@ const styles = {
   }
 };
 
-export default function Home() {
+ function Home() {
   const router = useRouter();
   return (
     <>
@@ -56,7 +48,7 @@ export default function Home() {
         <LibrartNavbar />
         <Carousel className={"w-100 vh-100"} style={{ display: "flex", justifyContent: "center", margin: "auto", marginTop: "-56px" }}>
           {
-            getImages().map((image) =>
+            [wp1, wp2, wp3, wp4].map((image) =>
               <Carousel.Item key={image.src}>
                 <img
                   className="d-block overflow-hidden mh-100"
@@ -73,3 +65,5 @@ export default function Home() {
     </>
   )
 }
+
+export default Home;
