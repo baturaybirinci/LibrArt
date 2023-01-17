@@ -1,7 +1,7 @@
 import LibrartNavbar from "../../../components/librart-navbar";
 import { getIPFSjson, tokenURI,initDex,getOwnerOf,initWallet, sell } from "../../../helpers/web3Helpers";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import {useSelector} from "react-redux";
 
 
  function ID({ address, id }) {
@@ -9,28 +9,29 @@ import { useState, useEffect } from "react";
   const [dexContract, setDexContract] = useState("");
   const [price, setPrice] = useState("");
   const [owner, setOwner] = useState("");
-  const [selectedAccount, setSelectedAccount] = useState("");
+  const userAddress = useSelector(state => state.address);
 
   useEffect(() => {
-    initWallet().then((res) => setSelectedAccount(res));
 
-    if (address && id) {
-      tokenURI(address, id).then((res) =>
-        getIPFSjson(res.substring(res.lastIndexOf("/") + 1, res.length)).then(
-          (res) => setIPFSjson(res)
-        )
-      );
-    }
-    initDex().then((res) => {
-        setDexContract(res)
-        res.methods.viewofferedNftPrice(address,id).call().then((res) => setPrice(res))
+      tokenURI(address, id).then((res) => {
+          getIPFSjson(res.substring(res.lastIndexOf("/") + 1, res.length)).then(
+              (res) => setIPFSjson(res)
+          )
+      });
+
+      initDex().then((dex) => {
+        setDexContract(dex)
+        dex.methods.viewofferedNftPrice(address,id).call().then((res) => setPrice(res))
         console.log(price);
-        if(price === "")
+        if(price === "") {
             getOwnerOf(address,id).then((res) => setOwner(res))
-        else
-            res.methods.viewofferedNftOwner(address,id).call().then((res) => setOwner(res))
+        }
+        else {
+            dex.methods.viewofferedNftOwner(address,id).call().then((res) => setOwner(res))
+        }
     })
   }, []);
+
   const sellNft = async (event) => {
     event.preventDefault();
     console.log(event)
@@ -45,7 +46,7 @@ import { useState, useEffect } from "react";
       <img src={IPFSjson.image} />
       <div>DUMMY YAZI</div>
       <div>price : {price? 'doesnt sell':price}</div>
-        <div>{owner === selectedAccount? 'IT IS YOU': owner}</div>
+        <div>{owner === userAddress? 'IT IS YOU': owner}</div>
       <form onSubmit={sellNft}>
         <input type="text" name="price" />
         <button type="submit">sell</button>
