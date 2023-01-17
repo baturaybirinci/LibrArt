@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import Web3 from "web3";
 import LibrartNavbar from "../components/librart-navbar";
-import { getNameAndSymbol,initWallet,aprove } from "../helpers/web3Helpers";
+import { getNameAndSymbol,initWallet,approve } from "../helpers/web3Helpers";
 import { DEX_JSON,NFT_JSON,TOKEN_JSON } from "../constants";
 export default function services() {
   // our metamask addresses
@@ -112,7 +112,7 @@ export default function services() {
   const approveNft = async (event) => {
     event.preventDefault()
     console.log(event)
-      await aprove(event.target.address.value,0)
+      await approve(event.target.address.value,0)
   }
   const approveToken = async (event) => {
     event.preventDefault()
