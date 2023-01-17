@@ -35,7 +35,7 @@ import {useSelector} from "react-redux";
   const sellNft = async (event) => {
     event.preventDefault();
     console.log(event)
-    await sell(address,id,event.target.price.value)
+    await sell(userAddress, address,id,event.target.price.value)
   }
   const buy = async (event) => {
     console.log('will do buy')
