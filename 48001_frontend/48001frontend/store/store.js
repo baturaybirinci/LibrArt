@@ -11,7 +11,7 @@ import {
     PURGE,
     REGISTER,
 } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+const storage = require('redux-persist/lib/storage').default;
 
 const persistConfig = {
     key: 'auth',
