@@ -117,4 +117,4 @@ export const BUY_NFT_ABI = {
   stateMutability: "payable",
   type: "function",
 };
-export const DEX_ADDRESS = "0x933B67B94cDcE1305F27565F0E76eE8ECE24380A";
+export const DEX_ADDRESS = "0xB495D50199b83F61d6D13B94878ceF12A0552Fe0";
