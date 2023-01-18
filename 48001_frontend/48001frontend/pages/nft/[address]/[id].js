@@ -1,5 +1,5 @@
 import LibrartNavbar from "../../../components/librart-navbar";
-import {getIPFSjson, tokenURI, initDex, getOwnerOf, sell, getNameAndSymbol} from "../../../helpers/web3Helpers";
+import {getIPFSjson, tokenURI, initDex, getOwnerOf, sell, getNameAndSymbol, getOfferedToken, getOfferedNFT, getLockedNft} from "../../../helpers/web3Helpers";
 import { useState, useEffect } from "react";
 import {useSelector} from "react-redux";
 
@@ -14,6 +14,9 @@ import {useSelector} from "react-redux";
 
   useEffect(() => {
       getNameAndSymbol(address).then(res => setCollection(res));
+      getLockedNft(address, id).then(res => console.log(res));
+      getOfferedNFT(address, id).then(res => console.log(res));
+      // getOfferedToken(address, id).then(res => console.log(res));
   }, [])
 
   useEffect(() => {

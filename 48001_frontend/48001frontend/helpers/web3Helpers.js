@@ -50,13 +50,13 @@ async function getOwnerOf(address, id) {
   return owner;
 }
 
-async function approve(collectionAddress, nftID) {
+async function approve(userAddress, collectionAddress, nftID) {
   const WEB3 = new Web3(window.ethereum);
   const contract = new WEB3.eth.Contract(NFT_JSON["abi"], collectionAddress);
   console.log('aproving')
   await contract.methods
     .approve(DEX_ADDRESS, nftID)
-    .send({ from: "0x3293c6e7D51c723f73D840dFE44E69F1d6958a9B" });
+    .send({ from: userAddress });
 }
 // async function lock(address, id, price) {
 //   console.log(address, id, price);
@@ -70,7 +70,7 @@ async function approve(collectionAddress, nftID) {
 
 // }
 async function sell(userAddress, collectionAddress, nftID, price) {
-  await approve(collectionAddress, nftID);
+  await approve(userAddress, collectionAddress, nftID);
   const WEB3 = new Web3(window.ethereum);
   const contract = new WEB3.eth.Contract([SELL_NFT_ABI], DEX_ADDRESS);
   await contract.methods
@@ -80,7 +80,7 @@ async function sell(userAddress, collectionAddress, nftID, price) {
 }
 
 async function buy(userAddress, collectionAddress, nftID, price) {
-  await approve(collectionAddress, nftID);
+  await approve(userAddress, collectionAddress, nftID);
   const WEB3 = new Web3(window.ethereum);
   const contract = new WEB3.eth.Contract([BUY_NFT_ABI], DEX_ADDRESS);
   await contract.methods
@@ -158,9 +158,36 @@ async function unlock(userAddress, collectionAddress, nftID) {
 }
 
 async function lock(userAddress, collectionAddress, nftID, amount) {
+  await approve(userAddress, collectionAddress, nftID);
   const web3 = new Web3(window.ethereum);
   let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
   return await contract.methods.lock(collectionAddress, nftID, amount).send({ from: userAddress });
+}
+
+async function getOfferedToken(collectionAddress, tokenAddress) {
+  const web3 = new Web3(window.ethereum);
+  let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
+  const tokenAmount = await contract.methods.viewofferedTokenAmount(collectionAddress, tokenAddress).call();
+  const tokenPrice = await contract.methods.viewofferedTokenPrice(collectionAddress, tokenAddress).call();
+  return {tokenAmount, tokenPrice};
+}
+
+async function getOfferedNFT(collectionAddress, nftID) {
+  const web3 = new Web3(window.ethereum);
+  let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
+  const nftOwner = await contract.methods.viewofferedNftOwner(collectionAddress, nftID).call();
+  const nftPrice = await contract.methods.viewofferedNftPrice(collectionAddress, nftID).call();
+  return {nftOwner, nftPrice};
+}
+
+async function getLockedNft(collectionAddress, nftID) {
+  const web3 = new Web3(window.ethereum);
+  let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
+  const nftOwner = await contract.methods.viewlockedNftOwner(collectionAddress, nftID).call();
+  const nftAddress = await contract.methods.viewlockedNftAddress(collectionAddress, nftID).call();
+  const nftAmount = await contract.methods.viewlockedNftAmount(collectionAddress, nftID).call();
+  const blockHeight = await contract.methods.viewlockedNftBHeight(collectionAddress, nftID).call();
+  return {nftOwner, nftAddress, nftAmount, blockHeight};
 }
 
 
@@ -178,5 +205,9 @@ export {
   getAccountNFTS,
   mint,
   unlock,
-  lock
+  lock,
+  buy,
+  getOfferedToken,
+  getOfferedNFT,
+  getLockedNft
 };
