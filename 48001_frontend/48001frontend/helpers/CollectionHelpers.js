@@ -13,5 +13,14 @@ async function getAllCollections(params) {
     }
 }
 
+async function getCollection(address) {
+    try {
+        const res = await axios.get(`${API_PATH}/collection/${address}/`);
+        return res.data;
+    }
+    catch {
+        return {};
+    }
+}
 
-export {getAllCollections}
+export {getAllCollections, getCollection}

@@ -1,15 +1,20 @@
 import LibrartNavbar from "../../../components/librart-navbar";
-import { getIPFSjson, tokenURI,initDex,getOwnerOf,initWallet, sell } from "../../../helpers/web3Helpers";
+import {getIPFSjson, tokenURI, initDex, getOwnerOf, sell, getNameAndSymbol} from "../../../helpers/web3Helpers";
 import { useState, useEffect } from "react";
 import {useSelector} from "react-redux";
 
 
  function ID({ address, id }) {
+  const userAddress = useSelector(state => state.address);
   const [IPFSjson, setIPFSjson] = useState("");
   const [dexContract, setDexContract] = useState("");
   const [price, setPrice] = useState("");
   const [owner, setOwner] = useState("");
-  const userAddress = useSelector(state => state.address);
+  const [collection, setCollection] = useState({});
+
+  useEffect(() => {
+      getNameAndSymbol(address).then(res => setCollection(res));
+  }, [])
 
   useEffect(() => {
 
@@ -34,7 +39,6 @@ import {useSelector} from "react-redux";
 
   const sellNft = async (event) => {
     event.preventDefault();
-    console.log(event)
     await sell(userAddress, address,id,event.target.price.value)
   }
   const buy = async (event) => {
@@ -44,13 +48,19 @@ import {useSelector} from "react-redux";
     <>
       <LibrartNavbar />
       <img src={IPFSjson.image} />
-      <div>DUMMY YAZI</div>
-      <div>price : {price? 'doesnt sell':price}</div>
-        <div>{owner === userAddress? 'IT IS YOU': owner}</div>
-      <form onSubmit={sellNft}>
-        <input type="text" name="price" />
-        <button type="submit">sell</button>
-      </form>
+      <h5>{IPFSjson.name}</h5>
+        <p>collection:{collection.name} ({collection.symbol})</p>
+        <p>description:{IPFSjson.description}</p>
+      <div>price : {price ? 'Not for sale.':price}</div>
+
+        <div>{owner === userAddress? 'You are the owner.': owner}</div>
+        {owner === userAddress &&
+            <form onSubmit={sellNft}>
+            <input type="text" name="price" />
+            <button type="submit">sell</button>
+        </form>
+        }
+
     </>
   );
 }
@@ -60,6 +70,5 @@ export default ID;
 ID.getInitialProps = async (ctx) => {
     return { ...ctx.query };
 }
-
 
 
