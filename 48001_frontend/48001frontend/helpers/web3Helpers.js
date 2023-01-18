@@ -84,9 +84,9 @@ async function buy(userAddress, collectionAddress, nftID, price) {
   const WEB3 = new Web3(window.ethereum);
   const contract = new WEB3.eth.Contract([BUY_NFT_ABI], DEX_ADDRESS);
   await contract.methods
-      .buy(collectionAddress, nftID)
-      .send({ from: userAddress, value: price })
-      .then((res) => console.log(res));
+    .buy(collectionAddress, nftID)
+    .send({ from: userAddress, value: price })
+    .then((res) => console.log(res));
 }
 
 async function getNameAndSymbol(address) {
@@ -125,6 +125,7 @@ async function tokenURI(address, id) {
   let ret;
   await contract.methods
     .tokenURI(id).call().then((res) => {
+      console.log(res);
       ret = res;
     });
   console.log(ret);
@@ -148,7 +149,7 @@ async function getAccountNFTS(address) {
 async function mint(userAddress, collectionAddress, nftID, tokenAddress) {
   const web3 = new Web3(window.ethereum);
   let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
-  return await contract.methods.mint(collectionAddress, nftID, tokenAddress).send({from: userAddress });
+  return await contract.methods.mint(collectionAddress, nftID, tokenAddress).send({ from: userAddress });
 }
 
 async function unlock(userAddress, collectionAddress, nftID) {

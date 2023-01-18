@@ -2,8 +2,8 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import Web3 from "web3";
 import LibrartNavbar from "../components/librart-navbar";
-import { getNameAndSymbol,initWallet,approve } from "../helpers/web3Helpers";
-import { DEX_JSON,NFT_JSON,TOKEN_JSON } from "../constants";
+import { getNameAndSymbol, initWallet, approve } from "../helpers/web3Helpers";
+import { DEX_JSON, NFT_JSON, TOKEN_JSON } from "../constants";
 export default function services() {
   // our metamask addresses
   const [selectedAccount, setSelectedAccount] = useState("");
@@ -19,18 +19,18 @@ export default function services() {
   const mint = async (event) => {
     event.preventDefault();
     console.log(event.target.address.value);
+    const web3 = new Web3(window.ethereum);
     const contract = new web3.eth.Contract(
       NFT_JSON["abi"],
       event.target.address.value
     );
-    await ipfsLinks.forEach((link) => {
-      contract.methods
-        .safeMint(selectedAccount, link)
-        .send({ from: selectedAccount })
-        .catch((err) => {
-          alert(err);
-        });
-    })
+    await contract.methods
+      .safeMint(selectedAccount, event.target.ipfs.value)
+      .send({ from: selectedAccount })
+      .catch((err) => {
+        alert(err);
+      });
+
   };
 
 
@@ -83,17 +83,17 @@ export default function services() {
         alert(receipt.contractAddress);
       });
   };
-  const mintToken = async(event) => {
+  const mintToken = async (event) => {
     event.preventDefault();
     let toAddress = event.target.toaddress.value;
     let address = event.target.address.value;
     let amount = event.target.amount.value;
     const web3 = new Web3(window.ethereum);
-    const contract = new web3.eth.Contract(TOKEN_JSON["abi"],address);
+    const contract = new web3.eth.Contract(TOKEN_JSON["abi"], address);
     console.log(contract.methods)
     await contract.methods
-    .mint(toAddress,amount)
-    .send({ from: selectedAccount })
+      .mint(toAddress, amount)
+      .send({ from: selectedAccount })
   }
   const createToken = async (event) => {
     event.preventDefault();
@@ -112,12 +112,12 @@ export default function services() {
   const approveNft = async (event) => {
     event.preventDefault()
     console.log(event)
-      await approve(event.target.address.value,1)
+    await approve(event.target.address.value, 1)
   }
   const approveToken = async (event) => {
     event.preventDefault()
     console.log(event)
-      await aprove(event.target.address.value,event.target.amount.value)
+    await aprove(event.target.address.value, event.target.amount.value)
   }
 
   return (
@@ -131,7 +131,7 @@ export default function services() {
       <LibrartNavbar />
       <main>
         <div>
-        <button onClick={createDex}>CreateDex</button>
+          <button onClick={createDex}>CreateDex</button>
           <form onSubmit={createToken}>
             <input type="text" name="name" />
             <input type="text" name="symbol" />
@@ -148,21 +148,22 @@ export default function services() {
           </form>
           <form onSubmit={mint}>
             <input type="text" name="address" />
+            <input type="text" name="ipfs" />
             <button type="submit">Mint</button>
           </form>
           <form onSubmit={approveNft}>
             <input type="text" name="address" />
             <button type="submit">approve</button>
-          </form>      
+          </form>
           <form onSubmit={approveToken}>
-          <input type="text" name="address" />
-          <input type="text" name="amount" />
+            <input type="text" name="address" />
+            <input type="text" name="amount" />
             <button type="submit">approveToken</button>
-          </form>          
-    
+          </form>
+
           <form onSubmit={mintToken}>
-          <input type="text" name="toaddress" />
-          <input type="text" name="address" />
+            <input type="text" name="toaddress" />
+            <input type="text" name="address" />
             <input type="number" name="amount" />
             <button type="submit">approve</button>
           </form>
