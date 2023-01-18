@@ -145,6 +145,24 @@ async function getAccountNFTS(address) {
   return ret;
 }
 
+async function mint(userAddress, collectionAddress, nftID, tokenAddress) {
+  const web3 = new Web3(window.ethereum);
+  let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
+  return await contract.methods.mint(collectionAddress, nftID, tokenAddress).send({from: userAddress });
+}
+
+async function unlock(userAddress, collectionAddress, nftID) {
+  const web3 = new Web3(window.ethereum);
+  let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
+  return await contract.methods.unlock(collectionAddress, nftID).send({ from: userAddress });
+}
+
+async function lock(userAddress, collectionAddress, nftID, amount) {
+  const web3 = new Web3(window.ethereum);
+  let contract = new web3.eth.Contract(DEX_JSON["abi"], DEX_ADDRESS);
+  return await contract.methods.lock(collectionAddress, nftID, amount).send({ from: userAddress });
+}
+
 
 
 
@@ -157,5 +175,8 @@ export {
   getOwnerOf,
   sell,
   approve,
-  getAccountNFTS
+  getAccountNFTS,
+  mint,
+  unlock,
+  lock
 };
