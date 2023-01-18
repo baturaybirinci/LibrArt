@@ -25,6 +25,38 @@ contract dex{
     mapping(address => mapping(address => token)) private offeredTokens;
 
     
+    // event mintHappened(address _owner, address _tokenAddr, uint256 _mintAmount);
+    // event unlockHappened(address _owner, address _tokenAddr, uint256 _tokenID);
+    // event sellHappenedErc(address _seller,  address _tokenAddr, uint256 _price, uint256 _amount);
+    // event buyHappenedErc(address _seller,  address _buyer, address _tokenAddr, uint256 _price, uint256 _amount);
+
+
+    function viewofferedTokenAmount(address adrMapping, address adrToken) public view returns (uint256) { //index limit may require this and followings
+        return offeredTokens[adrMapping][adrToken].amount;
+    }
+    function viewofferedTokenPrice(address adrMapping, address adrToken) public view returns (uint256) {
+        return offeredTokens[adrMapping][adrToken].price;
+    }
+//offeredNfts getters
+    function viewofferedNftOwner(address adr, uint key) public view returns (address) { //index limit may require this and followings
+        return offeredNfts[adr][key].owner;
+    }
+    function viewofferedNftPrice(address adr, uint key) public view returns (uint256) {
+        return offeredNfts[adr][key].price;
+    }
+//lockedNfts getters
+    function viewlockedNftOwner(address adr, uint key) public view returns (address) { //index limit may require this and followings
+        return lockedNfts[adr][key].owner;
+    }
+    function viewlockedNftAddress(address adr, uint key) public view returns (address) {
+        return lockedNfts[adr][key].tokenAddress;
+    }
+    function viewlockedNftAmount(address adr, uint key) public view returns (uint256) {
+        return lockedNfts[adr][key].tokenAmount;
+    }
+    function viewlockedNftBHeight(address adr, uint key) public view returns (uint256) {
+        return lockedNfts[adr][key].blockHeight;
+    }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -70,8 +102,8 @@ contract dex{
     function unlock(address adr, uint256 id) public {
         // require(lockedNfts[adr][id].blockHeight+128 <= block.number);
         require(((lockedNfts[adr][id].tokenAddress == address(this)) && lockedNfts[adr][id].owner == msg.sender) 
-        // IERC20(adr) will be lockednfts adr id tokenaddress
-                || (IERC20(lockedNfts[adr][id].tokenAddress).totalSupply() == IERC20(adr).balanceOf(msg.sender)));
+                || (IERC20(lockedNfts[adr][id].tokenAddress).totalSupply() == IERC20(lockedNfts[adr][id].tokenAddress).balanceOf(msg.sender)));
+
         // TODO: make sure the person who invokes this function owns all tokens.
         delete offeredNfts[adr][id]; // DELETE ?
             IERC721(adr).transferFrom(address(this),msg.sender,id);

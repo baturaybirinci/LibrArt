@@ -112,7 +112,7 @@ export default function services() {
   const approveNft = async (event) => {
     event.preventDefault()
     console.log(event)
-      await approve(event.target.address.value,0)
+      await approve(event.target.address.value,1)
   }
   const approveToken = async (event) => {
     event.preventDefault()
@@ -154,7 +154,7 @@ export default function services() {
             <input type="text" name="address" />
             <button type="submit">approve</button>
           </form>      
-          <form onSubmit={approveNft}>
+          <form onSubmit={approveToken}>
           <input type="text" name="address" />
           <input type="text" name="amount" />
             <button type="submit">approveToken</button>
